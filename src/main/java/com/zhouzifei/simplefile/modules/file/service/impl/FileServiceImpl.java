@@ -12,6 +12,7 @@ import com.zhouzifei.tool.config.FileProperties;
 import com.zhouzifei.tool.consts.StorageTypeConst;
 import com.zhouzifei.tool.dto.VirtualFile;
 import com.zhouzifei.tool.entity.MetaDataRequest;
+import com.zhouzifei.tool.media.file.service.ApiClient;
 import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
 import com.zhouzifei.tool.util.StringUtils;
