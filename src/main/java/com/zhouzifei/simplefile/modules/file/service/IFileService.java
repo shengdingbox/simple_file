@@ -17,8 +17,8 @@ public interface IFileService {
 
     void delete(String fileIds,String storageType);
 
-    RPanFile getFileDetail(Long realFileId,String storageType);
+    RPanFile getFileDetail(Long realFileId);
 
-    List<RPanFile> getFileListByMd5(String md5,String storageType);
+    List<RPanFile> getFileListByMd5(String md5);
 
 }

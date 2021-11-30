@@ -42,7 +42,7 @@ public class RPanShareCodeAspect {
     /**
      * 切点入口
      */
-    private final String POINT_CUT = "@annotation(com.zhouzifei.mediaTool.common.annotation.NeedShareCode)";
+    private final String POINT_CUT = "@annotation(com.zhouzifei.simplefile.common.annotation.NeedShareCode)";
 
     /**
      * 切点

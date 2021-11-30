@@ -81,7 +81,7 @@ public class RecycleBinController {
     @DeleteMapping("recycle")
     @NeedLogin
     public R delete(@Validated @RequestBody RecycleBinDeletePO recycleBinDeletePO) {
-        iRecycleBinService.delete(recycleBinDeletePO.getFileIds(), UserIdUtil.get());
+        iRecycleBinService.delete(recycleBinDeletePO.getFileIds(), UserIdUtil.get(),recycleBinDeletePO.getStorageType());
         return R.success();
     }
 

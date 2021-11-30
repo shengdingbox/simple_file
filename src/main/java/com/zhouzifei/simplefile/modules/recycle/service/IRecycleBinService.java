@@ -14,6 +14,6 @@ public interface IRecycleBinService {
 
     void restore(String fileIds, Long userId);
 
-    void delete(String fileIds, Long userId);
+    void delete(String fileIds, Long userId, String storageType);
 
 }

@@ -63,8 +63,8 @@ public class RecycleBinServiceImpl implements IRecycleBinService {
      * @return
      */
     @Override
-    public void delete(String fileIds, Long userId) {
-        iUserFileService.physicalDeleteUserFiles(fileIds, userId);
+    public void delete(String fileIds, Long userId,String storageType) {
+        iUserFileService.physicalDeleteUserFiles(fileIds, userId,storageType);
     }
 
 }

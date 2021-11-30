@@ -17,12 +17,12 @@ import com.zhouzifei.simplefile.modules.file.vo.RPanUserFileSearchVO;
 import com.zhouzifei.simplefile.modules.file.vo.RPanUserFileVO;
 import com.zhouzifei.simplefile.modules.share.service.IShareService;
 import com.zhouzifei.simplefile.modules.user.service.IUserSearchHistoryService;
-import com.zhouzifei.simplefile.storage.StorageManager;
 import com.zhouzifei.simplefile.util.FileUtil;
 import com.zhouzifei.simplefile.util.HttpUtil;
 import com.zhouzifei.simplefile.util.IdGenerator;
 import com.zhouzifei.simplefile.util.StringListUtil;
 import com.zhouzifei.simplefile.util.file.type.context.FileTypeContext;
+import com.zhouzifei.tool.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,8 +168,8 @@ public class UserFileServiceImpl implements IUserFileService {
      * @param size
      */
     @Override
-    public void upload(MultipartFile file, Long parentId, Long userId, String md5, Long size) {
-        RPanFile rPanFile = uploadRealFile(file, userId, md5, size);
+    public void upload(MultipartFile file, Long parentId, Long userId, String md5, Long size,String storageType) {
+        RPanFile rPanFile = uploadRealFile(file, userId, md5, size,storageType);
         String filename = file.getOriginalFilename();
         saveUserFile(parentId, filename, FileConstant.FolderFlagEnum.NO, FileTypeContext.getFileTypeCode(filename), rPanFile.getFileId(), userId, rPanFile.getFileSizeDesc());
     }
@@ -188,8 +188,8 @@ public class UserFileServiceImpl implements IUserFileService {
      * @return
      */
     @Override
-    public void uploadWithChunk(MultipartFile file, Long parentId, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name) {
-        RPanFile rPanFile = uploadRealFileWithChunk(file, userId, md5, chunks, chunk, size, name);
+    public void uploadWithChunk(MultipartFile file, Long parentId, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name,String storageType) {
+        RPanFile rPanFile = uploadRealFileWithChunk(file, userId, md5, chunks, chunk, size, name,storageType);
         if (rPanFile != null) {
             saveUserFile(parentId, name, FileConstant.FolderFlagEnum.NO, FileTypeContext.getFileTypeCode(name), rPanFile.getFileId(), userId, rPanFile.getFileSizeDesc());
         }
@@ -293,7 +293,7 @@ public class UserFileServiceImpl implements IUserFileService {
             fileTypeArray = StringListUtil.string2IntegerList(fileTypes);
         }
         List<RPanUserFileSearchVO> rPanUserFileSearchVOList = rPanUserFileMapper.selectRPanUserFileVOListByUserIdAndFilenameAndFileTypes(userId, keyword, fileTypeArray);
-        if (CollectionUtils.isNotEmpty(rPanUserFileSearchVOList)) {
+        if (!CollectionUtils.isEmpty(rPanUserFileSearchVOList)) {
             List<Long> parentIdList = rPanUserFileSearchVOList.stream().map(RPanUserFileSearchVO::getParentId).collect(Collectors.toList());
             List<FilePositionBO> filePositionBOList = rPanUserFileMapper.selectFilePositionBOListByFileIds(parentIdList);
             final Map<Long, String> filePositionMap = filePositionBOList.stream().collect(Collectors.toMap(FilePositionBO::getFileId, FilePositionBO::getFilename));
@@ -392,7 +392,7 @@ public class UserFileServiceImpl implements IUserFileService {
      * @return
      */
     @Override
-    public void physicalDeleteUserFiles(String fileIds, Long userId) {
+    public void physicalDeleteUserFiles(String fileIds, Long userId,String storageType) {
         if (StringUtils.isBlank(fileIds) || Objects.isNull(userId)) {
             throw new RPanException("物理删除用户文件失败");
         }
@@ -405,7 +405,7 @@ public class UserFileServiceImpl implements IUserFileService {
         if (CollectionUtils.isEmpty(realFileIdSet)) {
             return;
         }
-        iFileService.delete(StringListUtil.longListToString(realFileIdSet));
+        iFileService.delete(StringListUtil.longListToString(realFileIdSet),storageType);
     }
 
     /**
@@ -659,10 +659,6 @@ public class UserFileServiceImpl implements IUserFileService {
         response.setContentType(contentTypeValue);
     }
 
-    @Autowired
-    @Qualifier(value = "storageManager")
-    private StorageManager storageManager;
-
     /**
      * 文件写入响应实体
      *
@@ -671,7 +667,7 @@ public class UserFileServiceImpl implements IUserFileService {
      */
     private void read2OutputStream(String filePath, HttpServletResponse response) {
         try {
-            storageManager.read2OutputStream(filePath, response.getOutputStream());
+            //todo storageManager.read2OutputStream(filePath, response.getOutputStream());
         } catch (Exception e) {
             log.error("文件写入响应实体失败", e);
         }
@@ -728,8 +724,8 @@ public class UserFileServiceImpl implements IUserFileService {
      * @param size
      * @return
      */
-    private RPanFile uploadRealFile(MultipartFile file, Long userId, String md5, Long size) {
-        return iFileService.save(file, userId, md5, size);
+    private RPanFile uploadRealFile(MultipartFile file, Long userId, String md5, Long size,String storageType) {
+        return iFileService.save(file, userId, md5, size,storageType);
     }
 
     /**
@@ -1025,8 +1021,8 @@ public class UserFileServiceImpl implements IUserFileService {
      * @param name
      * @return
      */
-    private RPanFile uploadRealFileWithChunk(MultipartFile file, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name) {
-        return iFileService.saveWithChunk(file, userId, md5, chunks, chunk, size, name);
+    private RPanFile uploadRealFileWithChunk(MultipartFile file, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name,String storageType) {
+        return iFileService.saveWithChunk(file, userId, md5, chunks, chunk, size, name,storageType);
     }
 
 }

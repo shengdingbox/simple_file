@@ -6,13 +6,13 @@ import com.zhouzifei.simplefile.common.exception.RPanException;
 import com.zhouzifei.simplefile.modules.file.dao.RPanFileMapper;
 import com.zhouzifei.simplefile.modules.file.entity.RPanFile;
 import com.zhouzifei.simplefile.modules.file.service.IFileService;
-import com.zhouzifei.simplefile.storage.StorageManager;
 import com.zhouzifei.simplefile.util.FileUtil;
 import com.zhouzifei.simplefile.util.IdGenerator;
 import com.zhouzifei.tool.config.FileProperties;
 import com.zhouzifei.tool.consts.StorageTypeConst;
 import com.zhouzifei.tool.dto.VirtualFile;
-import com.zhouzifei.tool.media.file.service.ApiClient;
+import com.zhouzifei.tool.entity.MetaDataRequest;
+import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
 import com.zhouzifei.tool.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -105,7 +105,7 @@ public class FileServiceImpl implements IFileService {
      * @return
      */
     @Override
-    public RPanFile getFileDetail(Long realFileId,String storageType) {
+    public RPanFile getFileDetail(Long realFileId) {
         RPanFile rPanFile = rPanFileMapper.selectByPrimaryKey(realFileId);
         if (Objects.isNull(rPanFile)) {
             throw new RPanException("实体文件不存在");
@@ -114,11 +114,9 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<RPanFile> getFileListByMd5(String md5,String storageType) {
+    public List<RPanFile> getFileListByMd5(String md5) {
         return rPanFileMapper.selectByMd5(md5);
     }
-
-    /************************************************************************私有************************************************************************/
 
     /**
      * 保存物理文件信息
@@ -143,7 +141,6 @@ public class FileServiceImpl implements IFileService {
         try {
             final VirtualFile virtualFile = apiClient.uploadFile(file.getInputStream(), file.getOriginalFilename());
             return virtualFile.getFullFilePath();
-
         } catch (IOException e) {
             log.error("上传失败", e);
             throw new RPanException("上传失败");
@@ -219,12 +216,15 @@ public class FileServiceImpl implements IFileService {
         final FileUploader fileUploader = new FileUploader();
         final StorageTypeConst enumType = StorageTypeConst.getEnumType(storageType);
         final ApiClient apiClient = fileUploader.getApiClient(enumType, fileProperties);
-        try {
-            return apiClient.multipartUpload(file.getInputStream(), md5, chunks, chunk, size, file.getSize(), name);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RPanException("上传失败!");
-        }
+        MetaDataRequest metaDataRequest = new MetaDataRequest();
+        metaDataRequest.setFileMd5(md5);
+        metaDataRequest.setChunks(String.valueOf(chunks));
+        metaDataRequest.setChunk(String.valueOf(chunk));
+        metaDataRequest.setChunkSize(Math.toIntExact(size));
+        metaDataRequest.setSize(file.getSize());
+        //metaDataRequest.setName(name);
+        VirtualFile virtualFile = apiClient.multipartUpload(file, metaDataRequest);
+        return virtualFile.getFullFilePath();
     }
 
 }

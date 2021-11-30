@@ -41,7 +41,7 @@ public class RPanLoginAspect {
     /**
      * 切点入口
      */
-    private final String POINT_CUT = "@annotation(com.zhouzifei.mediaTool.common.annotation.NeedLogin)";
+    private final String POINT_CUT = "@annotation(com.zhouzifei.simplefile.common.annotation.NeedLogin)";
 
     @Autowired
     private RedisUtil redisUtil;

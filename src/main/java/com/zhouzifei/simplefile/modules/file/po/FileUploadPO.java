@@ -2,6 +2,7 @@ package com.zhouzifei.simplefile.modules.file.po;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @ApiModel(value = "文件上传PO")
+@Data
 public class FileUploadPO implements Serializable {
 
     private static final long serialVersionUID = -6712494353573613150L;
@@ -39,6 +41,8 @@ public class FileUploadPO implements Serializable {
     @ApiModelProperty(value = "上传文件", required = true)
     @NotNull(message = "上传文件不能为空")
     private MultipartFile file;
+
+    private String storageType;
 
     public FileUploadPO() {
     }

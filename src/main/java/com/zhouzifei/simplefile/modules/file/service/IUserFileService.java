@@ -28,9 +28,9 @@ public interface IUserFileService {
 
     void delete(String fileIds, Long userId);
 
-    void upload(MultipartFile file, Long parentId, Long userId, String md5, Long size);
+    void upload(MultipartFile file, Long parentId, Long userId, String md5, Long size,String storageType);
 
-    void uploadWithChunk(MultipartFile file, Long parentId, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name);
+    void uploadWithChunk(MultipartFile file, Long parentId, Long userId, String md5, Integer chunks, Integer chunk, Long size, String name,String storageType);
 
     void download(Long fileId, HttpServletResponse response, Long userId);
 
@@ -52,7 +52,7 @@ public interface IUserFileService {
 
     void restoreUserFiles(String fileIds, Long userId);
 
-    void physicalDeleteUserFiles(String fileIds, Long userId);
+    void physicalDeleteUserFiles(String fileIds, Long userId,String storageType);
 
     List<RPanUserFileVO> allList(String fileIds);
 

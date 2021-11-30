@@ -128,9 +128,9 @@ public class FileRestController {
     @NeedLogin
     public R upload(@Validated FileUploadPO fileUploadPO) {
         if (fileUploadPO.isChunked()) {
-            iUserFileService.uploadWithChunk(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getChunks(), fileUploadPO.getChunk(), fileUploadPO.getSize(), fileUploadPO.getName());
+            iUserFileService.uploadWithChunk(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getChunks(), fileUploadPO.getChunk(), fileUploadPO.getSize(), fileUploadPO.getName(),fileUploadPO.getStorageType());
         } else {
-            iUserFileService.upload(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getSize());
+            iUserFileService.upload(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getSize(),fileUploadPO.getStorageType());
         }
         return R.success();
     }
