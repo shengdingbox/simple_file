@@ -9,6 +9,7 @@ import com.zhouzifei.simplefile.modules.file.vo.FolderTreeNodeVO;
 import com.zhouzifei.simplefile.modules.file.vo.RPanUserFileSearchVO;
 import com.zhouzifei.simplefile.modules.file.vo.RPanUserFileVO;
 import com.zhouzifei.simplefile.util.UserIdUtil;
+import com.zhouzifei.tool.consts.StorageTypeConst;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目文件相关rest接口返回
@@ -53,6 +55,25 @@ public class FileRestController {
     public R<List<RPanUserFileVO>> list(@NotNull(message = "父id不能为空") @RequestParam(value = "parentId", required = false) Long parentId,
                                         @RequestParam(name = "fileTypes", required = false, defaultValue = "-1") String fileTypes) {
         return R.data(iUserFileService.list(parentId, fileTypes, UserIdUtil.get()));
+    }
+    /**
+     * 获取文件列表
+     *
+     * @param parentId
+     * @param fileTypes
+     * @return
+     */
+    @ApiOperation(
+            value = "获取文件列表",
+            notes = "该接口提供了获取文件列表的功能",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    @GetMapping("type")
+    @NeedLogin
+    public R<Map<Object,Object>> type() {
+        Map<Object, Object> map = StorageTypeConst.getMap();
+        return R.data(map);
     }
 
     /**
