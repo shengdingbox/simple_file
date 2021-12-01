@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = "com.zhouzifei")
 @EnableTransactionManagement
-@MapperScan("com.zhouzifei.mediaTool.modules.**.dao")
-@ServletComponentScan(basePackages = "com.rubin")
+@MapperScan("com.zhouzifei.simplefile.modules.**.dao")
+@ServletComponentScan(basePackages = "com.zhouzifei")
 public class RPanApplication {
 
     public static void main(String[] args) {

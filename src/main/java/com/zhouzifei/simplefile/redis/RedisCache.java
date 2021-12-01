@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component(value = "redisCache")
-@ConditionalOnProperty(prefix = "rpan.cache", name = "type", havingValue = "com.rubin.rpan.cache.redis.RedisCache")
+@ConditionalOnProperty(prefix = "rpan.cache", name = "type", havingValue = "com.zhouzifei.simplefile.cache.redis.RedisCache")
 public class RedisCache implements Cache {
 
     @Autowired

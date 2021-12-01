@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
  * Created by RubinChu on 2021/1/22 下午 4:11
  */
 @Component(value = "redisUtil")
-@ConditionalOnProperty(prefix = "rpan.cache", name = "type", havingValue = "com.rubin.rpan.cache.redis.RedisCache")
 public class RedisUtil {
 
     @Autowired

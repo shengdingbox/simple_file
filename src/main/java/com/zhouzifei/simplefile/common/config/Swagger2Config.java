@@ -1,6 +1,5 @@
 package com.zhouzifei.simplefile.common.config;
 
-import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +20,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootConfiguration
 @EnableSwagger2
-@EnableSwaggerBootstrapUI
 public class Swagger2Config {
 
     private static final Logger log = LoggerFactory.getLogger(Swagger2Config.class);

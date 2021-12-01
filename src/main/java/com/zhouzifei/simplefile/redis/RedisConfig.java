@@ -23,7 +23,7 @@ import java.util.Objects;
  * Created by RubinChu on 2021/1/22 下午 4:11
  */
 @SpringBootConfiguration
-@ConditionalOnProperty(prefix = "rpan.cache", name = "type", havingValue = "com.rubin.rpan.cache.redis.RedisCache")
+@ConditionalOnProperty(prefix = "rpan.cache", name = "type", havingValue = "com.zhouzifei.simplefile.cache.redis.RedisCache")
 @ConfigurationProperties(prefix = "rpan.cache.redis")
 public class RedisConfig {
 
