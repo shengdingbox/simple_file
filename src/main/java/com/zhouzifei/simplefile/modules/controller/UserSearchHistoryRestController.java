@@ -41,7 +41,7 @@ public class UserSearchHistoryRestController {
     @GetMapping("user/search/histories")
     @NeedLogin
     public R<List<RPanUserSearchHistoryVO>> list() {
-        return R.data(iUserSearchHistoryService.list(UserIdUtil.get()));
+        return R.data(iUserSearchHistoryService.list(UserIdUtil.getUserId()));
     }
 
 }

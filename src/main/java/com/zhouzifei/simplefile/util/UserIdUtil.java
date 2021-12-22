@@ -1,5 +1,7 @@
 package com.zhouzifei.simplefile.util;
 
+import com.zhouzifei.tool.consts.StorageTypeConst;
+
 import java.util.Objects;
 
 /**
@@ -10,14 +12,15 @@ public class UserIdUtil {
 
     public static final Long ZERO_LONG = 0L;
 
-    private static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Long> threadLocal = new ThreadLocal<>();
+    private static ThreadLocal<String> storageType = new ThreadLocal<>();
 
     /**
      * 设置当前登录的用户ID
      *
      * @param value
      */
-    public static void set(Long value) {
+    public static void setUserId(Long value) {
         threadLocal.set(value);
     }
 
@@ -26,12 +29,32 @@ public class UserIdUtil {
      *
      * @return
      */
-    public static Long get() {
+    public static Long getUserId() {
         Long value = threadLocal.get();
         if (Objects.isNull(value)) {
             return ZERO_LONG;
         }
         return value;
     }
+    /**
+     * 设置当前登录的用户ID
+     *
+     * @param value
+     */
+    public static void setStorageType(String value) {
+        storageType.set(value);
+    }
 
+    /**
+     * 获取当前登录的用户ID
+     *
+     * @return
+     */
+    public static String getStorageType() {
+        String value = storageType.get();
+        if (Objects.isNull(value)) {
+            return StorageTypeConst.LOCAL.getStorageType();
+        }
+        return value;
+    }
 }

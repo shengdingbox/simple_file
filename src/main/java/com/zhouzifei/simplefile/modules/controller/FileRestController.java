@@ -58,7 +58,7 @@ public class FileRestController {
     @NeedLogin
     public R<List<RPanUserFileVO>> list(@NotNull(message = "父id不能为空") @RequestParam(value = "parentId", required = false) Long parentId,
                                         @RequestParam(name = "fileTypes", required = false, defaultValue = "-1") String fileTypes) {
-        return R.data(iUserFileService.list(parentId, fileTypes, UserIdUtil.get()));
+        return R.data(iUserFileService.list(parentId, fileTypes, UserIdUtil.getUserId()));
     }
     /**
      * 获取文件列表
@@ -118,7 +118,7 @@ public class FileRestController {
     @PostMapping("file/folder")
     @NeedLogin
     public R createFolder(@Validated @RequestBody CreateFolderPO createFolderPO) {
-        iUserFileService.createFolder(createFolderPO.getParentId(), createFolderPO.getFolderName(), UserIdUtil.get());
+        iUserFileService.createFolder(createFolderPO.getParentId(), createFolderPO.getFolderName(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -137,7 +137,7 @@ public class FileRestController {
     @PutMapping("file")
     @NeedLogin
     public R updateFilename(@Validated @RequestBody UpdateFileNamePO updateFileNamePO) {
-        iUserFileService.updateFilename(updateFileNamePO.getFileId(), updateFileNamePO.getNewFilename(), UserIdUtil.get());
+        iUserFileService.updateFilename(updateFileNamePO.getFileId(), updateFileNamePO.getNewFilename(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -156,7 +156,7 @@ public class FileRestController {
     @DeleteMapping("file")
     @NeedLogin
     public R delete(@Validated @RequestBody DeletePO deletePO) {
-        iUserFileService.delete(deletePO.getFileIds(), UserIdUtil.get());
+        iUserFileService.delete(deletePO.getFileIds(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -177,9 +177,9 @@ public class FileRestController {
     public R upload(@Validated FileUploadPO fileUploadPO) {
         final String  storageType = StorageUtil.get();
         if (fileUploadPO.isChunked()) {
-            iUserFileService.uploadWithChunk(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getChunks(), fileUploadPO.getChunk(), fileUploadPO.getSize(), fileUploadPO.getName(),storageType);
+            iUserFileService.uploadWithChunk(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.getUserId(), fileUploadPO.getMd5(), fileUploadPO.getChunks(), fileUploadPO.getChunk(), fileUploadPO.getSize(), fileUploadPO.getName(),storageType);
         } else {
-            iUserFileService.upload(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.get(), fileUploadPO.getMd5(), fileUploadPO.getSize(),storageType);
+            iUserFileService.upload(fileUploadPO.getFile(), fileUploadPO.getParentId(), UserIdUtil.getUserId(), fileUploadPO.getMd5(), fileUploadPO.getSize(),storageType);
         }
         return R.success();
     }
@@ -199,7 +199,7 @@ public class FileRestController {
     @PostMapping("file/sec-upload")
     @NeedLogin
     public R secUpload(@Validated @RequestBody FileSecUploadPO fileSecUploadPO) {
-        if (iUserFileService.secUpload(fileSecUploadPO.getParentId(), fileSecUploadPO.getName(), fileSecUploadPO.getMd5(), UserIdUtil.get())) {
+        if (iUserFileService.secUpload(fileSecUploadPO.getParentId(), fileSecUploadPO.getName(), fileSecUploadPO.getMd5(), UserIdUtil.getUserId())) {
             return R.success();
         }
         return R.fail("MD5不存在");
@@ -221,7 +221,7 @@ public class FileRestController {
     @NeedLogin
     public void download(@NotNull(message = "请选择要下载的文件") @RequestParam(value = "fileId", required = false) Long fileId,
                          HttpServletResponse response) {
-        iUserFileService.download(fileId, response, UserIdUtil.get());
+        iUserFileService.download(fileId, response, UserIdUtil.getUserId());
     }
 
     /**
@@ -238,7 +238,7 @@ public class FileRestController {
     @GetMapping("file/folder/tree")
     @NeedLogin
     public R<List<FolderTreeNodeVO>> getFolderTree() {
-        return R.data(iUserFileService.getFolderTree(UserIdUtil.get()));
+        return R.data(iUserFileService.getFolderTree(UserIdUtil.getUserId()));
     }
 
     /**
@@ -256,7 +256,7 @@ public class FileRestController {
     @PostMapping("file/transfer")
     @NeedLogin
     public R transfer(@Validated @RequestBody TransferPO transferPO) {
-        iUserFileService.transfer(transferPO.getFileIds(), transferPO.getTargetParentId(), UserIdUtil.get());
+        iUserFileService.transfer(transferPO.getFileIds(), transferPO.getTargetParentId(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -275,7 +275,7 @@ public class FileRestController {
     @PostMapping("file/copy")
     @NeedLogin
     public R copy(@Validated @RequestBody CopyPO copyPO) {
-        iUserFileService.copy(copyPO.getFileIds(), copyPO.getTargetParentId(), UserIdUtil.get());
+        iUserFileService.copy(copyPO.getFileIds(), copyPO.getTargetParentId(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -296,7 +296,7 @@ public class FileRestController {
     @NeedLogin
     public R<List<RPanUserFileSearchVO>> search(@NotBlank(message = "关键字不能为空") @RequestParam(value = "keyword", required = false) String keyword,
                                                 @RequestParam(name = "fileTypes", required = false, defaultValue = "-1") String fileTypes) {
-        return R.data(iUserFileService.search(keyword, fileTypes, UserIdUtil.get()));
+        return R.data(iUserFileService.search(keyword, fileTypes, UserIdUtil.getUserId()));
     }
 
     /**
@@ -314,7 +314,7 @@ public class FileRestController {
     @GetMapping("file")
     @NeedLogin
     public R<RPanUserFileVO> detail(@NotNull(message = "文件id不能为空") @RequestParam(value = "fileId", required = false) Long fileId) {
-        return R.data(iUserFileService.detail(fileId, UserIdUtil.get()));
+        return R.data(iUserFileService.detail(fileId, UserIdUtil.getUserId()));
     }
 
     /**
@@ -331,7 +331,7 @@ public class FileRestController {
     @GetMapping("file/breadcrumbs")
     @NeedLogin
     public R<List<BreadcrumbVO>> getBreadcrumbs(@NotNull(message = "文件id不能为空") @RequestParam(value = "fileId", required = false) Long fileId) {
-        return R.data(iUserFileService.getBreadcrumbs(fileId, UserIdUtil.get()));
+        return R.data(iUserFileService.getBreadcrumbs(fileId, UserIdUtil.getUserId()));
     }
 
     /**
@@ -350,7 +350,7 @@ public class FileRestController {
     @NeedLogin
     public void preview(@NotNull(message = "文件id不能为空") @RequestParam(value = "fileId", required = false) Long fileId,
                         HttpServletResponse response) {
-        iUserFileService.preview(fileId, response, UserIdUtil.get());
+        iUserFileService.preview(fileId, response, UserIdUtil.getUserId());
     }
 
 }

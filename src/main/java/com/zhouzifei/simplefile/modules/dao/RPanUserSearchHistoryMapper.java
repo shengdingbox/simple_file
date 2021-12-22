@@ -1,11 +1,13 @@
 package com.zhouzifei.simplefile.modules.dao;
 
+
 import com.zhouzifei.simplefile.modules.entity.RPanUserSearchHistory;
 import com.zhouzifei.simplefile.modules.vo.RPanUserSearchHistoryVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 
 /**
  * 用户搜索历史数据层

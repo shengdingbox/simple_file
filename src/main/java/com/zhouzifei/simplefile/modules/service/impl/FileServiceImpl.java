@@ -3,7 +3,7 @@ package com.zhouzifei.simplefile.modules.service.impl;
 import com.google.common.base.Splitter;
 import com.zhouzifei.simplefile.common.constant.CommonConstant;
 import com.zhouzifei.simplefile.common.exception.RPanException;
-import com.zhouzifei.simplefile.modules.dao.RPanFileRepository;
+import com.zhouzifei.simplefile.modules.dao.RPanFileMapper;
 import com.zhouzifei.simplefile.modules.entity.RPanFile;
 import com.zhouzifei.simplefile.modules.service.IFileService;
 import com.zhouzifei.simplefile.util.FileUtil;
@@ -15,16 +15,18 @@ import com.zhouzifei.tool.entity.MetaDataRequest;
 import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
 import com.zhouzifei.tool.util.StringUtils;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 物理文件业务处理类
@@ -32,11 +34,13 @@ import java.util.List;
  */
 @Service(value = "fileService")
 @Transactional(rollbackFor = Exception.class)
-@Slf4j
 public class FileServiceImpl implements IFileService {
 
+    private static final Logger log = LoggerFactory.getLogger(FileServiceImpl.class);
+
     @Autowired
-    RPanFileRepository rPanFileRepository;
+    @Qualifier(value = "rPanFileMapper")
+    private RPanFileMapper rPanFileMapper;
 
     @Autowired
     private FileProperties fileProperties;
@@ -105,13 +109,16 @@ public class FileServiceImpl implements IFileService {
      */
     @Override
     public RPanFile getFileDetail(Long realFileId) {
-        final RPanFile rPanFile = rPanFileRepository.findById(realFileId).orElseThrow(RuntimeException::new);
+        RPanFile rPanFile = rPanFileMapper.selectByPrimaryKey(realFileId);
+        if (Objects.isNull(rPanFile)) {
+            throw new RPanException("实体文件不存在");
+        }
         return rPanFile;
     }
 
     @Override
     public List<RPanFile> getFileListByMd5(String md5) {
-        return rPanFileRepository.selectByMd5(md5);
+        return rPanFileMapper.selectByMd5(md5);
     }
 
     /**
@@ -120,7 +127,9 @@ public class FileServiceImpl implements IFileService {
      * @param rPanFile
      */
     private void saveFileInfo(RPanFile rPanFile) {
-        rPanFileRepository.save(rPanFile);
+        if (rPanFileMapper.insertSelective(rPanFile) != CommonConstant.ONE_INT) {
+            throw new RPanException("上传失败");
+        }
     }
 
     /**
@@ -176,8 +185,8 @@ public class FileServiceImpl implements IFileService {
      */
     private void deleteFileInfos(String fileIds) {
         List<String> fileIdList = Splitter.on(CommonConstant.COMMON_SEPARATOR).splitToList(fileIds);
-        for (String s : fileIdList) {
-            rPanFileRepository.deleteById(Long.getLong(s));
+        if (rPanFileMapper.deleteBatch(fileIdList) != fileIdList.size()) {
+            throw new RPanException("删除物理文件信息失败");
         }
     }
 
@@ -191,12 +200,7 @@ public class FileServiceImpl implements IFileService {
         final FileUploader fileUploader = new FileUploader();
         final StorageTypeConst enumType = StorageTypeConst.getEnumType(storageType);
         final ApiClient apiClient = fileUploader.getApiClient(enumType, fileProperties);
-        final List<String> strings = Splitter.on(CommonConstant.COMMON_SEPARATOR).splitToList(fileIds);
-        List<RPanFile> rPanFileList = new ArrayList<>();
-        for (String string : strings) {
-            final RPanFile rPanFile = rPanFileRepository.findById(Long.getLong(string)).orElseGet(RPanFile::new);
-            rPanFileList.add(rPanFile);
-        }
+        List<RPanFile> rPanFileList = rPanFileMapper.selectByFileIdList(Splitter.on(CommonConstant.COMMON_SEPARATOR).splitToList(fileIds));
         rPanFileList.stream().map(RPanFile::getRealPath).forEach(apiClient::removeFile);
     }
 
@@ -217,8 +221,8 @@ public class FileServiceImpl implements IFileService {
         final ApiClient apiClient = fileUploader.getApiClient(enumType, fileProperties);
         MetaDataRequest metaDataRequest = new MetaDataRequest();
         metaDataRequest.setFileMd5(md5);
-        metaDataRequest.setChunks(String.valueOf(chunks));
-        metaDataRequest.setChunk(String.valueOf(chunk));
+        metaDataRequest.setChunks(chunks);
+        metaDataRequest.setChunk(chunk);
         metaDataRequest.setChunkSize(Math.toIntExact(size));
         metaDataRequest.setSize(file.getSize());
         //metaDataRequest.setName(name);

@@ -17,6 +17,7 @@ import com.zhouzifei.simplefile.modules.vo.RPanUserShareSimpleDetailVO;
 import com.zhouzifei.simplefile.modules.vo.RPanUserShareUrlVO;
 import com.zhouzifei.simplefile.modules.service.IUserService;
 import com.zhouzifei.simplefile.util.*;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -196,9 +197,10 @@ public class ShareServiceImpl implements IShareService {
      */
     @Override
     public void download(Long shareId, Long fileId, HttpServletResponse response) {
+        final String storageType = UserIdUtil.getStorageType();
         checkShareStatus(shareId);
         checkFileIsOnShareStatus(shareId, StringListUtil.longListToString(fileId));
-        iUserFileService.download(fileId, response);
+        iUserFileService.download(fileId, response,storageType);
     }
 
     /******************************************************私有****************************************************/

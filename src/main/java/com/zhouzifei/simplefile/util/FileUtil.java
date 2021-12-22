@@ -155,8 +155,8 @@ public class FileUtil {
      * @param size
      * @throws IOException
      */
-    public static void writeFileToStream(FileInputStream fileInputStream, OutputStream outputStream, Long size) throws IOException {
-        FileChannel fileChannel = fileInputStream.getChannel();
+    public static void writeFileToStream(InputStream fileInputStream, OutputStream outputStream, Long size) throws IOException {
+        FileChannel fileChannel = ((FileInputStream)fileInputStream).getChannel();
         WritableByteChannel writableByteChannel = Channels.newChannel(outputStream);
         fileChannel.transferTo(ZERO_LONG, size, writableByteChannel);
         outputStream.flush();

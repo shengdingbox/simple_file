@@ -1,7 +1,6 @@
 package com.zhouzifei.simplefile.modules.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +10,7 @@ import java.util.Objects;
  * 用户信息实体类
  * Created by RubinChu on 2021/1/22 下午 4:11
  */
-@Table("r_pan_user")
+@Data
 public class RPanUser implements Serializable {
 
     private static final long serialVersionUID = -3128274535492573630L;
@@ -22,7 +21,6 @@ public class RPanUser implements Serializable {
     /**
      * 用户id
      */
-    @Id
     private Long userId;
 
     /**

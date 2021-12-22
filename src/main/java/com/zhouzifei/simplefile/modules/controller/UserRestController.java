@@ -79,7 +79,7 @@ public class UserRestController {
     @PostMapping("user/exit")
     @NeedLogin
     public R exit() {
-        iUserService.exit(UserIdUtil.get());
+        iUserService.exit(UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -97,7 +97,7 @@ public class UserRestController {
     @GetMapping("user")
     @NeedLogin
     public R<RPanUserVO> info() {
-        final Long userId = UserIdUtil.get();
+        final Long userId = UserIdUtil.getUserId();
         final RPanUserVO info = iUserService.info(userId);
         return R.data(info);
     }
@@ -169,7 +169,7 @@ public class UserRestController {
     @PostMapping("user/password/change")
     @NeedLogin
     public R changePassword(@Validated @RequestBody ChangePasswordPO changePasswordPO) {
-        iUserService.changePassword(changePasswordPO.getPassword(), changePasswordPO.getNewPassword(), UserIdUtil.get());
+        iUserService.changePassword(changePasswordPO.getPassword(), changePasswordPO.getNewPassword(), UserIdUtil.getUserId());
         return R.success();
     }
 

@@ -4,14 +4,14 @@ import com.zhouzifei.simplefile.common.constant.CommonConstant;
 import com.zhouzifei.simplefile.common.exception.RPanException;
 import com.zhouzifei.simplefile.common.response.ResponseCode;
 import com.zhouzifei.simplefile.modules.constant.FileConstant;
-import com.zhouzifei.simplefile.modules.entity.RPanUserFile;
-import com.zhouzifei.simplefile.modules.service.IUserFileService;
-import com.zhouzifei.simplefile.modules.vo.ShareUserInfoVO;
 import com.zhouzifei.simplefile.modules.constant.UserConstant;
 import com.zhouzifei.simplefile.modules.dao.RPanUserMapper;
 import com.zhouzifei.simplefile.modules.entity.RPanUser;
+import com.zhouzifei.simplefile.modules.entity.RPanUserFile;
+import com.zhouzifei.simplefile.modules.service.IUserFileService;
 import com.zhouzifei.simplefile.modules.service.IUserService;
 import com.zhouzifei.simplefile.modules.vo.RPanUserVO;
+import com.zhouzifei.simplefile.modules.vo.ShareUserInfoVO;
 import com.zhouzifei.simplefile.redis.RedisUtil;
 import com.zhouzifei.simplefile.util.IdGenerator;
 import com.zhouzifei.simplefile.util.JwtUtil;
@@ -20,6 +20,7 @@ import com.zhouzifei.simplefile.util.UUIDUtil;
 import com.zhouzifei.tool.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,8 +85,7 @@ public class UserServiceImpl implements IUserService {
      */
     @Override
     public RPanUserVO info(Long userId) {
-        RPanUser rPanUser = rPanUserMapper.findById(userId).orElseThrow(RuntimeException::new);
-
+        RPanUser rPanUser = rPanUserMapper.selectByPrimaryKey(userId);
         RPanUserFile rPanUserFile = iUserFileService.getUserTopFileInfo(userId);
         return assembleRPanUserVO(rPanUser, rPanUserFile);
     }
@@ -205,11 +205,13 @@ public class UserServiceImpl implements IUserService {
      * @param rPanUser
      */
     private void saveUserInfo(RPanUser rPanUser) {
-        final RPanUser rPanUser1 = rPanUserMapper.selectByUsername(rPanUser.getUsername());
-        if(null != rPanUser1){
+        try {
+            if (rPanUserMapper.insertSelective(rPanUser) != CommonConstant.ONE_INT) {
+                throw new RPanException("注册失败");
+            }
+        } catch (DuplicateKeyException e) {
             throw new RPanException("用户名已存在");
         }
-        rPanUserMapper.save(rPanUser);
     }
 
     /**
@@ -319,7 +321,9 @@ public class UserServiceImpl implements IUserService {
     private void doResetPassword(RPanUser rPanUser, String newPassword) {
         rPanUser.setPassword(PasswordUtil.encryptPassword(rPanUser.getSalt(), newPassword));
         rPanUser.setUpdateTime(new Date());
-        rPanUserMapper.save(rPanUser);
+        if (rPanUserMapper.updateByPrimaryKeySelective(rPanUser) != CommonConstant.ONE_INT) {
+            throw new RPanException("重置密码失败");
+        }
     }
 
     /**
@@ -330,7 +334,7 @@ public class UserServiceImpl implements IUserService {
      * @return
      */
     private RPanUser checkOldPasswordAndGet(Long userId, String password) {
-        RPanUser rPanUser = rPanUserMapper.findById(userId).orElseThrow(RuntimeException::new);
+        RPanUser rPanUser = rPanUserMapper.selectByPrimaryKey(userId);
         if (!Objects.equals(rPanUser.getPassword(), PasswordUtil.encryptPassword(rPanUser.getSalt(), password))) {
             throw new RPanException("旧密码不正确");
         }
@@ -346,7 +350,9 @@ public class UserServiceImpl implements IUserService {
     private void doChangePassword(RPanUser rPanUser, String newPassword) {
         rPanUser.setPassword(PasswordUtil.encryptPassword(rPanUser.getSalt(), newPassword));
         rPanUser.setUpdateTime(new Date());
-        rPanUserMapper.save(rPanUser);
+        if (rPanUserMapper.updateByPrimaryKeySelective(rPanUser) != CommonConstant.ONE_INT) {
+            throw new RPanException("修改密码失败");
+        }
     }
 
     /**

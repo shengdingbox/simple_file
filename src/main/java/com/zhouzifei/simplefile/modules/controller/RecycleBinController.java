@@ -44,7 +44,7 @@ public class RecycleBinController {
     @GetMapping("recycles")
     @NeedLogin
     public R<List<RPanUserFileVO>> list() {
-        return R.data(iRecycleBinService.list(UserIdUtil.get()));
+        return R.data(iRecycleBinService.list(UserIdUtil.getUserId()));
     }
 
     /**
@@ -62,7 +62,7 @@ public class RecycleBinController {
     @PutMapping("recycle/restore")
     @NeedLogin
     public R restore(@Validated @RequestBody RestorePO restorePO) {
-        iRecycleBinService.restore(restorePO.getFileIds(), UserIdUtil.get());
+        iRecycleBinService.restore(restorePO.getFileIds(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -81,7 +81,7 @@ public class RecycleBinController {
     @DeleteMapping("recycle")
     @NeedLogin
     public R delete(@Validated @RequestBody RecycleBinDeletePO recycleBinDeletePO) {
-        iRecycleBinService.delete(recycleBinDeletePO.getFileIds(), UserIdUtil.get(),recycleBinDeletePO.getStorageType());
+        iRecycleBinService.delete(recycleBinDeletePO.getFileIds(), UserIdUtil.getUserId(),recycleBinDeletePO.getStorageType());
         return R.success();
     }
 

@@ -34,7 +34,7 @@ public interface IUserFileService {
 
     void download(Long fileId, HttpServletResponse response, Long userId);
 
-    void download(Long fileId, HttpServletResponse response);
+    void download(Long fileId, HttpServletResponse response,String storageType);
 
     List<FolderTreeNodeVO> getFolderTree(Long userId);
 

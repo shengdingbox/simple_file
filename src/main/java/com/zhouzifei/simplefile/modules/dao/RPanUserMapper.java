@@ -1,10 +1,8 @@
 package com.zhouzifei.simplefile.modules.dao;
 
-import com.zhouzifei.simplefile.modules.vo.ShareUserInfoVO;
 import com.zhouzifei.simplefile.modules.entity.RPanUser;
+import com.zhouzifei.simplefile.modules.vo.ShareUserInfoVO;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,17 +10,28 @@ import org.springframework.stereotype.Repository;
  * Created by RubinChu on 2021/1/22 下午 4:11
  */
 @Repository(value = "rPanUserMapper")
-public interface RPanUserMapper extends CrudRepository<RPanUser,Long> {
+public interface RPanUserMapper {
+
+    int deleteByPrimaryKey(Long userId);
 
     int insert(RPanUser record);
+
+    int insertSelective(RPanUser record);
+
+    RPanUser selectByPrimaryKey(Long userId);
+
+    int updateByPrimaryKeySelective(RPanUser record);
+
+    int updateByPrimaryKey(RPanUser record);
 
     String selectQuestionByUsername(@Param("username") String username);
 
     int selectCountByUsernameAndQuestionAndAnswer(@Param("username") String username, @Param("question") String question, @Param("answer") String answer);
 
+    RPanUser selectByUserId(@Param("userId") String userId);
+
     ShareUserInfoVO selectShareUserInfoVOByUserId(@Param("userId") Long userId);
 
-    @Query("select * from r_pan_user where username = :username")
     RPanUser selectByUsername(@Param("username") String username);
 
 }

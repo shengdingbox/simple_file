@@ -54,7 +54,7 @@ public class ShareController {
     @PostMapping("share")
     @NeedLogin
     public R<RPanUserShareUrlVO> create(@Validated @RequestBody CreateSharePO createSharePO) {
-        return R.data(iShareService.create(createSharePO.getShareName(), createSharePO.getShareType(), createSharePO.getShareDayType(), createSharePO.getShareFileIds(), UserIdUtil.get()));
+        return R.data(iShareService.create(createSharePO.getShareName(), createSharePO.getShareType(), createSharePO.getShareDayType(), createSharePO.getShareFileIds(), UserIdUtil.getUserId()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class ShareController {
     @GetMapping("shares")
     @NeedLogin
     public R<List<RPanUserShareUrlVO>> list() {
-        return R.data(iShareService.list(UserIdUtil.get()));
+        return R.data(iShareService.list(UserIdUtil.getUserId()));
     }
 
     /**
@@ -89,7 +89,7 @@ public class ShareController {
     @DeleteMapping("share")
     @NeedLogin
     public R cancel(@Validated @RequestBody CancelSharePO cancelSharePO) {
-        iShareService.cancel(cancelSharePO.getShareIds(), UserIdUtil.get());
+        iShareService.cancel(cancelSharePO.getShareIds(), UserIdUtil.getUserId());
         return R.success();
     }
 
@@ -177,7 +177,7 @@ public class ShareController {
     @NeedShareCode
     @NeedLogin
     public R save(@Validated @RequestBody ShareSavePO shareSavePO) {
-        iShareService.save(ShareIdUtil.get(), shareSavePO.getFileIds(), shareSavePO.getTargetParentId(), UserIdUtil.get());
+        iShareService.save(ShareIdUtil.get(), shareSavePO.getFileIds(), shareSavePO.getTargetParentId(), UserIdUtil.getUserId());
         return R.success();
     }
 

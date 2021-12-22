@@ -103,7 +103,7 @@ public class RPanLoginAspect {
      * @param userId
      */
     private void saveUserId(Object userId) {
-        UserIdUtil.set(Long.valueOf(String.valueOf(userId)));
+        UserIdUtil.setUserId(Long.valueOf(String.valueOf(userId)));
     }
 
 }
