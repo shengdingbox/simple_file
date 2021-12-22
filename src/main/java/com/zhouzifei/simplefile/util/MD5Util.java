@@ -1,5 +1,6 @@
 package com.zhouzifei.simplefile.util;
 
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 /**
@@ -23,7 +24,7 @@ public class MD5Util {
         try {
             // 创建一个md5算法对象
             MessageDigest md = MessageDigest.getInstance(MD5_STR);
-            byte[] messageByte = message.getBytes(UTF_8_STR);
+            byte[] messageByte = message.getBytes(StandardCharsets.UTF_8);
             // 获得MD5字节数组,16 * 8 = 128位
             byte[] md5Byte = md.digest(messageByte);
             // 转换为16进制字符串
