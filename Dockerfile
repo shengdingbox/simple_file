@@ -6,7 +6,7 @@ FROM hub.c.163.com/library/java:8-jre
 VOLUME /tmp
 
 # COPY or ADD to image
-COPY mediaToolDemo-0.0.1-SNAPSHOT.jar app.jar
+COPY target/mediaToolDemo-0.0.1-SNAPSHOT.jar app.jar
 
 RUN bash -c "touch /app.jar"
 #默认8080端口，我的server.port=80

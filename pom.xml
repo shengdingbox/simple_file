@@ -137,6 +137,35 @@
                 </configuration>
             </plugin>
             <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.1.0</version>
+                <!--配置部分-->
+                <configuration>
+                    <!--修改imageName节点的内容，改为私有仓库地址和端口，再加上镜像id和TAG,我们要直接传到私服-->
+                    <!--配置最后生成的镜像名，docker images里的，我们这边取项目名:版本-->
+                    <imageName>127.0.0.1:5000/${project.artifactId}:${project.version}</imageName>
+                    <!--基础镜像，相当于Dockerfile里的from-->
+                    <baseImage>ascdc/jdk8</baseImage>
+                    <!--入口点，project.build.finalName就是project标签下的build标签下的filename标签内容，testDocker-->
+                    <!--相当于启动容器后，会自动执行java-jar/testDocker.jar-->
+                    <entryPoint>["java", "‐jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <!--是否推送到docker私有仓库-->
+                    <pushImage>true</pushImage>
+                    <registryUrl>127.0.0.1:5000</registryUrl>
+
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <!--把哪个文件上传到docker，相当于Dockerfile里的add testDocker.jar /-->
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                    <dockerHost>http://127.0.0.1:2375</dockerHost>
+                </configuration>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.4</version>
