@@ -1,5 +1,6 @@
 package com.free.fs;
 
+import com.zhouzifei.tool.config.FileAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
  * @date 2021/3/16
  */
 @SpringBootApplication
-@EnableConfigurationProperties(FsServerProperties.class)
+@EnableConfigurationProperties(FileAutoConfiguration.class)
 public class FreeFsApplication {
 
     public static void main(String[] args) {

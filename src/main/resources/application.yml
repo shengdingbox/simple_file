@@ -86,11 +86,11 @@ fs:
       path: xxxxxxxxxxxxxxxxxxx
     #oss配置
     oss:
-      accessKey: LTAI4G6HywSWKoE5hnKYcHnU
-      secretKey: NmTO4tsRMcEfq6gBMOUA3X4OxTj2H1
-      endpoint: oss-cn-hongkong.aliyuncs.com
-      bucket: media-tool
-      path: http://media-tool.oss-cn-hongkong.aliyuncs.com
+      accessKey: xxxxxxxxxxxxxxxxxxx
+      secretKey: xxxxxxxxxxxxxxxxxxx
+      endpoint: xxxxxxxxxxxxxxxxxxx
+      bucket: xxxxxxxxxxxxxxxxxxx
+      path: xxxxxxxxxxxxxxxxxxx
 simple-fs:
   aws:
     access-key:

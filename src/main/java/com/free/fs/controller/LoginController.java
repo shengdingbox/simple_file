@@ -4,6 +4,7 @@ import com.free.fs.common.utils.R;
 import com.free.fs.model.User;
 import com.free.fs.service.UserService;
 import com.wf.captcha.ArithmeticCaptcha;
+import com.zhouzifei.tool.config.FileProperties;
 import com.zhouzifei.tool.util.StringUtils;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sound.midi.Soundbank;
 
 /**
  * LoginController
@@ -31,11 +34,15 @@ public class LoginController extends BaseController {
 
     private final UserService userService;
 
+    @Autowired
+    FileProperties fileProperties;
+
     /**
      * 登录页
      */
     @GetMapping("/login")
     public String login() {
+        System.out.println(fileProperties);
         if (getLoginUser() != null) {
             return "redirect:index";
         }

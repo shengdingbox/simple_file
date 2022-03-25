@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.parser.SqlParserHelper;
 import com.baomidou.mybatisplus.extension.plugins.tenant.TenantHandler;
 import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.properties.TenantProperties;
+import com.zhouzifei.tool.config.FileProperties;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.NullValue;
 import net.sf.jsqlparser.expression.StringValue;
@@ -28,7 +29,7 @@ public class TenantAutoConfigure {
     private TenantProperties tenantProperties;
 
     @Autowired
-    private FsServerProperties fsServerProperties;
+    private FileProperties fileProperties;
 
     @Bean
     public TenantHandler tenantHandler() {
@@ -38,10 +39,10 @@ public class TenantAutoConfigure {
              */
             @Override
             public Expression getTenantId(boolean where) {
-                String tenant = fsServerProperties.getType();
-                if (tenant != null) {
-                    return new StringValue(tenant);
-                }
+                //String tenant = fileProperties.getType();
+//                if (tenant != null) {
+//                    return new StringValue(tenant);
+//                }
                 return new NullValue();
             }
 
