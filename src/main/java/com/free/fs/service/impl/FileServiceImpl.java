@@ -4,13 +4,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.exception.BusinessException;
+import com.free.fs.common.utils.FileUtil;
 import com.free.fs.common.utils.R;
 import com.free.fs.mapper.FileMapper;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
+import com.zhouzifei.tool.config.FileProperties;
+import com.zhouzifei.tool.consts.StorageTypeConst;
+import com.zhouzifei.tool.dto.VirtualFile;
+import com.zhouzifei.tool.service.ApiClient;
+import com.zhouzifei.tool.service.FileUploader;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +34,11 @@ import java.util.stream.Collectors;
  * @author dinghao
  * @date 2021/4/6
  */
+@Service
 public  class FileServiceImpl extends ServiceImpl<FileMapper, FilePojo> implements FileService {
+
+    @Autowired
+    FileProperties fileProperties;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -94,12 +106,15 @@ public  class FileServiceImpl extends ServiceImpl<FileMapper, FilePojo> implemen
     }
 
     @Override
-    public R upload(MultipartFile[] files, String dirIds){
+    public R upload(MultipartFile[] files, String dirIds, String fileType){
         if (files == null || files.length == 0) {
             throw new BusinessException("文件不能为空");
         }
         for (MultipartFile file : files) {
-            FilePojo filePojo = uploadFile(file);
+            FilePojo filePojo = uploadFile(file,fileType);
+            if (filePojo == null) {
+                throw new BusinessException("文件不能为空");
+            }
             String dirId = dirIds.substring(dirIds.lastIndexOf(CommonConstant.DIR_SPLIT) + 1);
             if (CommonConstant.DIR_SPLIT.equals(dirId) || StringUtils.isEmpty(dirId)) {
                 filePojo.setParentId(CommonConstant.ROOT_PARENT_ID);
@@ -141,9 +156,18 @@ public  class FileServiceImpl extends ServiceImpl<FileMapper, FilePojo> implemen
      * 上传文件
      *
      * @param file
+     * @param fileType
      */
-    protected FilePojo uploadFile(MultipartFile file) {
-        return null;
+    protected FilePojo uploadFile(MultipartFile file, String fileType) {
+        final FileUploader fileUploader = new FileUploader();
+        final StorageTypeConst storageTypeConst = StorageTypeConst.getEnumType(fileType);
+        final ApiClient apiClient = fileUploader.getApiClient(storageTypeConst, fileProperties);
+        final VirtualFile virtualFile = apiClient.uploadFile(file);
+        log.debug(virtualFile.toString());
+        final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
+        filePojo.setUrl(virtualFile.getFullFilePath());
+        filePojo.setSource(fileType);
+        return filePojo;
     }
 
 

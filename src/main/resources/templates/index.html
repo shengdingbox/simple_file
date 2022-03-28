@@ -58,9 +58,11 @@
                 </button>
                 <button style="display: none" id="btnDilaog" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon">&#xe634;</i>弹窗选择
                 </button>
-                <button shiro:hasPermission="dir:manage" id="typeDilaog" class="layui-btn layui-btn-sm icon-btn"><i
-                        class="layui-icon layui-icon-app"></i>类型选择
-                </button>
+                <div class="layui-btn layui-btn-sm icon-btn">
+                    <select name="city" lay-verify="required" οnchange="gradeChange()" id="typeId" >
+                        <option th:each="item:${fileType}" th:value="${item.key}" th:text="${item.value}" class="optionClass"></option>
+                    </select>
+                </div>
                 <button shiro:hasPermission="dir:manage" id="dirDilaog" class="layui-btn layui-btn-sm icon-btn"><i
                         class="layui-icon layui-icon-app"></i>目录管理
                 </button>
@@ -179,7 +181,34 @@
         </div>
     </form>
 </script>
-
+<!--状态模态框-->
+<script type="text/html" id="typeModel">
+    <form class="layui-form my-form" id="typeForm" lay-filter="dirForm" style="overflow:auto;">
+        <input type="hidden" name="id">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <div class="layui-input-inline mr0" style="height: 200px">
+                    <select name="city" lay-verify="required">
+                        <option value=""></option>
+                        <option value="0">北京</option>
+                        <option value="1">上海</option>
+                        <option value="2">广州</option>
+                        <option value="3">深圳</option>
+                        <option value="4">杭州</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <button type="button" class="layui-btn icon-btn layui-btn-sm" id="selectTypeBtn">
+                    <i class="layui-icon">&#xe615;</i>搜索
+                </button>
+            </div>
+        </div>
+        <div class="layui-form-item form-text-right">
+            <button type="button" class="layui-btn layui-btn-primary" id="typeCloseBtn">取消</button>
+        </div>
+    </form>
+</script>
 <!--文件移动表单模态框-->
 <script type="text/html" id="moveModel">
     <form class="layui-form my-form" id="moveForm" lay-filter="moveForm" style="overflow:auto;">
@@ -238,6 +267,5 @@
 <script type="text/javascript" th:src="@{/assets/modules/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/assets/modules/clipboard.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
-
 </body>
 </html>

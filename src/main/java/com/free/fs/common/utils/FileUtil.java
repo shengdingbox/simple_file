@@ -122,7 +122,7 @@ public class FileUtil {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
 
-    public static FilePojo buildFilePojo(MultipartFile file) {
+    public static FilePojo buildFilePojo(MultipartFile file,String fileName) {
         //判断文件是否为空
         if (file.isEmpty()) {
             throw new BusinessException("文件不能为空");
@@ -149,8 +149,6 @@ public class FileUtil {
         } else {
             type = fileExt;
         }
-        //生成新的文件名
-        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
         FilePojo pojo = new FilePojo();
         pojo.setSuffix(fileExt);
         pojo.setSize(size);

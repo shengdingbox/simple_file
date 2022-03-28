@@ -8,12 +8,14 @@ import com.free.fs.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.soap.Addressing;
 import java.util.*;
 
 /**
@@ -28,6 +30,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FileController extends BaseController {
 
+    @Autowired
     private final FileService fileService;
 
     /**
@@ -97,9 +100,9 @@ public class FileController extends BaseController {
      * @return
      */
     @PostMapping({"", "/upload"})
-    public R upload(@RequestParam(value = "file") MultipartFile[] files, String dirIds) {
+    public R upload(@RequestParam(value = "file") MultipartFile[] files, String dirIds,String fileType) {
 
-        return fileService.upload(files, dirIds);
+        return fileService.upload(files, dirIds,fileType);
 
     }
 

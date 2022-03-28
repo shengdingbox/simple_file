@@ -48,9 +48,10 @@ public interface FileService extends IService<FilePojo> {
      *
      * @param files
      * @param dirIds
+     * @param fileType
      * @return
      */
-    R upload(MultipartFile[] files, String dirIds);
+    R upload(MultipartFile[] files, String dirIds, String fileType);
 
     /**
      * 分片上传大文件

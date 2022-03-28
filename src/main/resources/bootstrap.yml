@@ -59,38 +59,3 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
-
-fs:
-  #多租户应用隔离配置
-  tenant:
-    enable: true
-    ignoreTables:
-    - sys_user
-    - sys_user_role
-    - sys_role_auth
-    - sys_role
-    - sys_auth
-
-  # 云存储配置
-  simp-server:
-    type: oss
-    local:
-      uploadPath: D:/data/upload  #windows
-      #upload-path: /home/data/upload   #linux
-      #nginx映射本地目录的url，需自己配置
-      ngxinxUrl: http://localhost:4344/resource
-    qiniu:
-      accessKey: xxxxxxxxxxxxxxxxxxx
-      secretKey: xxxxxxxxxxxxxxxxxxx
-      bucket: xxxxxxxxxxxxxxxxxxx
-      path: xxxxxxxxxxxxxxxxxxx
-    #oss配置
-    oss:
-      accessKey: xxxxxxxxxxxxxxxxxxx
-      secretKey: xxxxxxxxxxxxxxxxxxx
-      endpoint: xxxxxxxxxxxxxxxxxxx
-      bucket: xxxxxxxxxxxxxxxxxxx
-      path: xxxxxxxxxxxxxxxxxxx
-simple-fs:
-  aws:
-    access-key:

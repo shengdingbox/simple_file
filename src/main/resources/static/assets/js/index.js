@@ -1,8 +1,7 @@
 layui.config({
     base: '../assets/modules/'
 }).extend({
-    contextMenu: 'contextMenu',
-    dtree: 'dtree/dtree'
+    contextMenu: 'contextMenu', dtree: 'dtree/dtree'
 }).use(['jquery', 'layer', 'element', 'upload', 'laytpl', 'util', 'contextMenu', 'form', 'dtree'], function () {
     var $ = layui.jquery;
     var layer = layui.layer;
@@ -20,8 +19,7 @@ layui.config({
             //通过$.ajaxSettings.xhr();获得XMLHttpRequest对象
             var xhr = $.ajaxSettings.xhr();
             //判断监听函数是否为函数
-            if (typeof xhrOnProgress.onprogress !== 'function')
-                return xhr;
+            if (typeof xhrOnProgress.onprogress !== 'function') return xhr;
             //如果有监听函数并且xhr对象支持绑定时就把监听函数绑定上去
             if (xhrOnProgress.onprogress && xhr.upload) {
                 xhr.upload.onprogress = xhrOnProgress.onprogress;
@@ -54,9 +52,7 @@ layui.config({
 
     // 右键菜单
     contextMenu.bind('.file-list', [{
-        icon: 'layui-icon layui-icon-app',
-        name: '新建文件夹',
-        click: function (e, event) {
+        icon: 'layui-icon layui-icon-app', name: '新建文件夹', click: function (e, event) {
             layer.open({
                 type: 1,
                 area: ['450px', '200px'],
@@ -73,8 +69,7 @@ layui.config({
                         var dirIds = $('#tvFPId').text();
                         layer.load(2);
                         $.post('/file/addFolder', {
-                            name: name,
-                            dirIds: dirIds
+                            name: name, dirIds: dirIds
                         }, function (res) {
                             layer.closeAll('loading');
                             if (res.code === 200) {
@@ -99,20 +94,16 @@ layui.config({
     // 上传文件事件
     var proIndex;
     upload.render({
-        elem: '#btnUpload',
-        url: '/file',
-        accept: 'file',
-        multiple: true,
-        size: 1024 * 20,
-        data: {
+        elem: '#btnUpload', url: '/file', accept: 'file', multiple: true, size: 1024 * 20, data: {
             dirIds: function () {
                 return $('#tvFPId').text();
+            },
+            fileType: function (){
+                return $("#typeId").val();
             }
-        },
-        choose: function (obj) {
+        }, choose: function (obj) {
             layer.load(2);
-        },
-        before: function (obj) {
+        }, before: function (obj) {
             layer.load(2);
             /*         proIndex = layer.open({
                          type: 1,
@@ -162,8 +153,7 @@ layui.config({
                 //重置进度条
                 //resetPercent();
             }
-        },
-        error: function () {
+        }, error: function () {
             layer.closeAll('loading');
             layer.close(proIndex);
             layer.msg('上传失败', {icon: 2});
@@ -188,20 +178,19 @@ layui.config({
             shade: [0.6, '#393D49'],
             closeBtn: 2,
             success: function (layero, index0) {
-                var uploadListView = $('#uploadList')
-                    , uploadListIns = upload.render({
-                    elem: '#uploadShardList'
-                    , url: '/file/uploadSharding'
-                    , accept: 'file'
-                    , multiple: false
-                    , auto: false
-                    , bindAction: '#testListAction'
-                    , data: {
+                var uploadListView = $('#uploadList'), uploadListIns = upload.render({
+                    elem: '#uploadShardList',
+                    url: '/file/uploadSharding',
+                    accept: 'file',
+                    multiple: false,
+                    auto: false,
+                    bindAction: '#testListAction',
+                    data: {
                         dirIds: function () {
                             return $('#tvFPId').text();
                         }
-                    }
-                    , xhr: xhrOnProgress,
+                    },
+                    xhr: xhrOnProgress,
                     progress: function (value) {
                         element.progress('uploadList', value + '%')//设置页面进度条
                     },
@@ -223,20 +212,7 @@ layui.config({
                         //读取本地文件
                         obj.preview(function (index, file, result) {
                             console.log(index);
-                            var tr = $(['<tr id="upload-' + index + '">'
-                                , '<td>' + file.name + '</td>'
-                                , '<td>' + (file.size / 1024).toFixed(1) + 'kb</td>'
-                                , '<td>等待上传</td>'
-                                , '<td>' +
-                                '   <div class="layui-progress" lay-showPercent="true" lay-filter="progress_' + index + '">' +
-                                '       <div class="layui-progress-bar" lay-percent="0%"></div>' +
-                                '   </div>' +
-                                ' </td>'
-                                , '<td>'
-                                , '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
-                                , '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
-                                , '</td>'
-                                , '</tr>'].join(''));
+                            var tr = $(['<tr id="upload-' + index + '">', '<td>' + file.name + '</td>', '<td>' + (file.size / 1024).toFixed(1) + 'kb</td>', '<td>等待上传</td>', '<td>' + '   <div class="layui-progress" lay-showPercent="true" lay-filter="progress_' + index + '">' + '       <div class="layui-progress-bar" lay-percent="0%"></div>' + '   </div>' + ' </td>', '<td>', '<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>', '<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>', '</td>', '</tr>'].join(''));
 
                             //单个重传
                             tr.find('.demo-reload').on('click', function () {
@@ -255,8 +231,7 @@ layui.config({
                     },
                     done: function (res, index, upload) {
                         if (res.code === 200) { //上传成功
-                            var tr = uploadListView.find('tr#upload-' + index)
-                                , tds = tr.children();
+                            var tr = uploadListView.find('tr#upload-' + index), tds = tr.children();
                             tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                             tds.eq(4).html(''); //清空操作
                             //重置进度条
@@ -268,8 +243,7 @@ layui.config({
                         this.error(res.msg, index, upload);
                     },
                     error: function (msg, index, upload) {
-                        var tr = uploadListView.find('tr#upload-' + index)
-                            , tds = tr.children();
+                        var tr = uploadListView.find('tr#upload-' + index), tds = tr.children();
                         tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
                         tds.eq(4).find('.demo-reload').removeClass('layui-hide'); //显示重传
                         layer.msg(msg, {icon: 2});
@@ -317,178 +291,49 @@ layui.config({
                             }
                         }
                     },
-                    toolbarExt: [
-                        {
-                            toolbarId: "moveNode",
-                            icon: "dtree-icon-move-down",
-                            title: "移动",
-                            handler: function (node) {
-                                var param = dtree.getChildParam(DTree, node.nodeId);
-                                var ids = [];
-                                var nodeMoveids = [];
-                                //禁用所选目录的子集目录
-                                for (var k in param) {
-                                    if (param[k].recordData.isDir) {
-                                        ids.push(param[k].nodeId);
-                                    }
-                                    nodeMoveids.push(param[k].nodeId);
+                    toolbarExt: [{
+                        toolbarId: "moveNode", icon: "dtree-icon-move-down", title: "移动", handler: function (node) {
+                            var param = dtree.getChildParam(DTree, node.nodeId);
+                            var ids = [];
+                            var nodeMoveids = [];
+                            //禁用所选目录的子集目录
+                            for (var k in param) {
+                                if (param[k].recordData.isDir) {
+                                    ids.push(param[k].nodeId);
                                 }
-                                if (node.recordData.isDir) {
-                                    ids.push(node.nodeId);
-                                }
-                                nodeMoveids.push(node.nodeId);
-                                openMoveModel(node.context, ids, nodeMoveids);
+                                nodeMoveids.push(param[k].nodeId);
                             }
-                        },
-                        {
-                            toolbarId: "editNode",
-                            icon: "dtree-icon-bianji",
-                            title: "编辑",
-                            handler: function (node) {
-                                openEditName(node.context, node.nodeId, node.recordData.isDir);
+                            if (node.recordData.isDir) {
+                                ids.push(node.nodeId);
                             }
-                        }, {
-                            toolbarId: "delNode",
-                            icon: "dtree-icon-roundclose",
-                            title: "删除",
-                            handler: function (node) {
-                                var index = layer.confirm('上级文件夹删除会把所有子文件也一起删除，你可要想好？', {
-                                    btn: ['想好了', '再想想']
-                                }, function () {
-                                    layer.load(2);
-                                    $.post('/file/deleteByIds', {id: node.nodeId}, function (res) {
-                                        layer.closeAll('loading');
-                                        if (res.code === 200) {
-                                            layer.msg(res.msg, {icon: 1});
-                                            DTree.refreshTree();
-                                            getDirs(node.nodeId);
-                                        } else {
-                                            layer.msg(res.msg, {icon: 2});
-                                        }
-                                    });
-                                }, function () {
-                                    layer.close(index);
-                                });
-                            }
+                            nodeMoveids.push(node.nodeId);
+                            openMoveModel(node.context, ids, nodeMoveids);
                         }
-                    ],
-                    dataStyle: "layuiStyle",
-                    response: {message: "msg", statusCode: 200},
-                    done: function (data, obj, first) {
-                        if (first) {
-                            $("#searchDirTreeBtn").unbind("click");
-                            $("#searchDirTreeBtn").click(function () {
-                                var value = $("#searchDirInput").val();
-                                if (value) {
-                                    var flag = DTree.searchNode(value);
-                                    if (!flag) {
-                                        layer.msg("该名称节点不存在！", {icon: 5});
+                    }, {
+                        toolbarId: "editNode", icon: "dtree-icon-bianji", title: "编辑", handler: function (node) {
+                            openEditName(node.context, node.nodeId, node.recordData.isDir);
+                        }
+                    }, {
+                        toolbarId: "delNode", icon: "dtree-icon-roundclose", title: "删除", handler: function (node) {
+                            var index = layer.confirm('上级文件夹删除会把所有子文件也一起删除，你可要想好？', {
+                                btn: ['想好了', '再想想']
+                            }, function () {
+                                layer.load(2);
+                                $.post('/file/deleteByIds', {id: node.nodeId}, function (res) {
+                                    layer.closeAll('loading');
+                                    if (res.code === 200) {
+                                        layer.msg(res.msg, {icon: 1});
+                                        DTree.refreshTree();
+                                        getDirs(node.nodeId);
+                                    } else {
+                                        layer.msg(res.msg, {icon: 2});
                                     }
-                                } else {
-                                    DTree.menubarMethod().refreshTree();
-                                }
+                                });
+                            }, function () {
+                                layer.close(index);
                             });
                         }
-                    }
-                });
-
-                //刷新树
-                $('#refreshDirTreeBtn').click(function () {
-                    DTree.menubarMethod().refreshTree();
-                });
-
-                //目录管理表单取消按钮事件
-                $('#dirCloseBtn').click(function () {
-                    layer.close(index);
-                });
-            }
-        });
-    });//目录管理
-    $('#typeDilaog').click(function () {
-        layer.open({
-            type: 1,
-            area: ['450px', '700px'],
-            title: '选择上传类型',
-            content: $('#dirModel').html(),
-            shade: [0.6, '#393D49'],
-            closeBtn: 2,
-            success: function (layero, index) {
-                DTree = dtree.render({
-                    obj: $(layero).find("#dirTree"),
-                    width: "86%",
-                    height: "500",
-                    method: "get",
-                    url: "/file/getTree",
-                    record: true,
-                    toolbar: true,
-                    toolbarShow: [],
-                    toolbarWay: "fixed",
-                    formatter: {
-                        title: function (data) {
-                            if (data.isDir) {
-                                var s = data.title;
-                                if (data.children) {
-                                    s += ' <span style=\'color:blue\'>(' + data.children.length + ')</span>';
-                                }
-                                return s;
-                            }
-                        }
-                    },
-                    toolbarExt: [
-                        {
-                            toolbarId: "moveNode",
-                            icon: "dtree-icon-move-down",
-                            title: "移动",
-                            handler: function (node) {
-                                var param = dtree.getChildParam(DTree, node.nodeId);
-                                var ids = [];
-                                var nodeMoveids = [];
-                                //禁用所选目录的子集目录
-                                for (var k in param) {
-                                    if (param[k].recordData.isDir) {
-                                        ids.push(param[k].nodeId);
-                                    }
-                                    nodeMoveids.push(param[k].nodeId);
-                                }
-                                if (node.recordData.isDir) {
-                                    ids.push(node.nodeId);
-                                }
-                                nodeMoveids.push(node.nodeId);
-                                openMoveModel(node.context, ids, nodeMoveids);
-                            }
-                        },
-                        {
-                            toolbarId: "editNode",
-                            icon: "dtree-icon-bianji",
-                            title: "编辑",
-                            handler: function (node) {
-                                openEditName(node.context, node.nodeId, node.recordData.isDir);
-                            }
-                        }, {
-                            toolbarId: "delNode",
-                            icon: "dtree-icon-roundclose",
-                            title: "删除",
-                            handler: function (node) {
-                                var index = layer.confirm('上级文件夹删除会把所有子文件也一起删除，你可要想好？', {
-                                    btn: ['想好了', '再想想']
-                                }, function () {
-                                    layer.load(2);
-                                    $.post('/file/deleteByIds', {id: node.nodeId}, function (res) {
-                                        layer.closeAll('loading');
-                                        if (res.code === 200) {
-                                            layer.msg(res.msg, {icon: 1});
-                                            DTree.refreshTree();
-                                            getDirs(node.nodeId);
-                                        } else {
-                                            layer.msg(res.msg, {icon: 2});
-                                        }
-                                    });
-                                }, function () {
-                                    layer.close(index);
-                                });
-                            }
-                        }
-                    ],
+                    }],
                     dataStyle: "layuiStyle",
                     response: {message: "msg", statusCode: 200},
                     done: function (data, obj, first) {
@@ -521,7 +366,6 @@ layui.config({
             }
         });
     });
-
     var mUrl;
     var name;
     var id;
@@ -537,8 +381,7 @@ layui.config({
         } else {
             var $target = $(this).find('.file-list-img');
             $('#dropdownFile').css({
-                'top': $target.offset().top + 90,
-                'left': $target.offset().left + 25
+                'top': $target.offset().top + 90, 'left': $target.offset().left + 25
             });
             $('#dropdownFile').addClass('dropdown-opened');
             if (e !== void 0) {
@@ -656,8 +499,7 @@ layui.config({
                         return false;
                     }
                     var jsonStr = {
-                        "ids": nodeMoveids.join(","),
-                        "parentId": params[0].nodeId
+                        "ids": nodeMoveids.join(","), "parentId": params[0].nodeId
                     };
                     layer.load(2);
                     $.post('/file/move', jsonStr, function (res) {
@@ -703,9 +545,7 @@ layui.config({
             success: function (layero, index) {
                 //表单赋值
                 form.val("editTreeNodeForm", {
-                    "id": id,
-                    "name": name,
-                    "rename": ""
+                    "id": id, "name": name, "rename": ""
                 });
                 //重命名表单提交
                 form.on('submit(editTreeNodeBtn)', function (data) {
@@ -829,79 +669,9 @@ layui.config({
             location.replace(url ? url : "/")
         })
     });
-    layui.use('dropdown', function () {
-        var dropdown = layui.dropdown
-        dropdown.render({
-            elem: '#demo1' //可绑定在任意元素中，此处以上述按钮为例
-            , data: [{
-                title: 'menu item 1'
-                , id: 100
-                , href: '#'
-            }, {
-                title: 'menu item 2'
-                , id: 101
-                , href: 'https://www.layui.com/' //开启超链接
-                , target: '_blank' //新窗口方式打开
-            }, {type: '-'}, {
-                title: 'menu item 3'
-                , id: 102
-                , type: 'group'  //菜单类型，支持：normal/group/parent/-
-                , child: [{
-                    title: 'menu item 3-1'
-                    , id: 103
-                }, {
-                    title: 'menu item 3-2'
-                    , id: 104
-                    , child: [{
-                        title: 'menu item 3-2-1'
-                        , id: 105
-                    }, {
-                        title: 'menu item 3-2-2'
-                        , id: 106
-                    }]
-                }, {
-                    title: 'menu item 3-3'
-                    , id: 107
-                }]
-            }, {type: '-'}, {
-                title: 'menu item 4'
-                , id: 108
-            }, {
-                title: 'menu item 5'
-                , id: 109
-                , child: [{
-                    title: 'menu item 5-1'
-                    , id: 11111
-                    , child: [{
-                        title: 'menu item 5-1-1'
-                        , id: 2111
-                    }, {
-                        title: 'menu item 5-1-2'
-                        , id: 3111
-                    }]
-                }, {
-                    title: 'menu item 5-2'
-                    , id: 52
-                }]
-            }, {type: '-'}, {
-                title: 'menu item 6'
-                , id: 6
-                , type: 'group'
-                , isSpreadItem: false
-                , child: [{
-                    title: 'menu item 6-1'
-                    , id: 61
-                }, {
-                    title: 'menu item 6-2'
-                    , id: 62
-                }]
-            }]
-            , id: 'demo1'
-            //菜单被点击的事件
-            , click: function (obj) {
-                console.log(obj);
-                layer.msg('回调返回的参数已显示再控制台');
-            }
-        });
+    $("#typeId").change(function () {
+        var opt = $("#typeId").val();
+        fileType = opt;
+        console.log(opt)
     });
 });
