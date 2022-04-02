@@ -1,12 +1,9 @@
 package com.free.fs.model;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,16 +13,13 @@ import java.util.Date;
  * @date 2021/3/12
  */
 @Data
-@TableName("file_info")
-@EqualsAndHashCode(callSuper = true)
-public class FilePojo extends Model<FilePojo> {
+public class FilePojo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 自增id
      */
-    @TableId
     private Long id;
 
     /**
@@ -86,12 +80,10 @@ public class FilePojo extends Model<FilePojo> {
     /**
      * 重命名的名称值
      */
-    @TableField(exist = false)
     private String rename;
 
     /**
      * 目录id拼接
      */
-    @TableField(exist = false)
     private String dirIds;
 }

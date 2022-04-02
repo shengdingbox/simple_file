@@ -10,19 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Map;
 
 @Controller
-public class IndexController extends BaseController {
+public class IndexController{
 
     /**
-     * 主页
-     */
+     * 主页Ï
+Ï     */
     @GetMapping({"", "/index"})
     public String index(Model model) {
-        if (getLoginUser() == null) {
-            return "redirect:login";
-        }
-        // 登录用户信息
         model.addAttribute("fileType", getFileType());
-        model.addAttribute("loginUser", getLoginUser());
+        //model.addAttribute("loginUser", getLoginUser());
         return "index";
     }
 

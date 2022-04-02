@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.free</groupId>
-    <artifactId>free-fs</artifactId>
+    <groupId>com.zhouzifei</groupId>
+    <artifactId>simple-file</artifactId>
     <version>1.1.0</version>
-    <name>free-fs</name>
+    <name>simple-file</name>
     <packaging>jar</packaging>
     <description>free-fs 文件管理系统</description>
 
@@ -21,12 +21,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>8</java.version>
-        <druid-starter>1.1.17</druid-starter>
-        <mybatis-plus-boot-starter.version>3.3.0</mybatis-plus-boot-starter.version>
         <hutool.version>5.3.7</hutool.version>
         <fastjson.version>1.2.70</fastjson.version>
-        <qiniu.version>7.2.23</qiniu.version>
-        <aliyun-sdk-oss>3.8.1</aliyun-sdk-oss>
         <commons-lang3.version>3.9</commons-lang3.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <tika.version>1.18</tika.version>
@@ -63,24 +59,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-starter}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-boot-starter.version}</version>
-        </dependency>
-
         <!--thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

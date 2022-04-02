@@ -10,9 +10,7 @@
     <link rel="stylesheet" th:href="@{/assets/modules/dtree/font/dtreefont.css}">
     <link rel="stylesheet" th:href="@{/assets/css/common.css}">
 </head>
-
 <body>
-
 <div class="header">
     <div class="layui-container">
         <div class="layui-logo">
@@ -26,7 +24,7 @@
         </li>
         <li class="layui-nav-item" lay-unselect>
             <a><img src="http://images.nowcoder.com/head/818t.png" class="layui-nav-img"><cite
-                    th:utext="${loginUser.nickName}"></cite></a>
+                    text="管理员"></cite></a>
             <dl class="layui-nav-child">
                 <dd lay-unselect><a href="javascript:void(0)" id="logout" data-url="/logout"><i class="layui-icon layui-icon-logout"></i>退出</a>
                 </dd>
@@ -181,34 +179,6 @@
         </div>
     </form>
 </script>
-<!--状态模态框-->
-<script type="text/html" id="typeModel">
-    <form class="layui-form my-form" id="typeForm" lay-filter="dirForm" style="overflow:auto;">
-        <input type="hidden" name="id">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <div class="layui-input-inline mr0" style="height: 200px">
-                    <select name="city" lay-verify="required">
-                        <option value=""></option>
-                        <option value="0">北京</option>
-                        <option value="1">上海</option>
-                        <option value="2">广州</option>
-                        <option value="3">深圳</option>
-                        <option value="4">杭州</option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-inline">
-                <button type="button" class="layui-btn icon-btn layui-btn-sm" id="selectTypeBtn">
-                    <i class="layui-icon">&#xe615;</i>搜索
-                </button>
-            </div>
-        </div>
-        <div class="layui-form-item form-text-right">
-            <button type="button" class="layui-btn layui-btn-primary" id="typeCloseBtn">取消</button>
-        </div>
-    </form>
-</script>
 <!--文件移动表单模态框-->
 <script type="text/html" id="moveModel">
     <form class="layui-form my-form" id="moveForm" lay-filter="moveForm" style="overflow:auto;">
@@ -239,19 +209,19 @@
 <!-- 渲染模板 -->
 <script id="fileTpl" type="text/html">
     {{#  layui.each(d, function(index, item){ }}
-    <div class="file-list-item" data-id="{{item.id}}" data-dir="{{item.isDir}}" data-url="{{item.url}}" data-name="{{item.name}}">
+    <div class="file-list-item" data-id="{{index}}" data-dir="{{item.isFold}}" data-url="{{item.fullFilePath}}" data-name="{{item.originalFileName}}">
         <div class="file-list-img">
-            {{# if(item.isImg){ }}
-            <img src="{{item.url}}"/>
+            {{# if(item.suffix=="jpg"||item.suffix=="png"){ }}
+            <img src="{{item.fullFilePath}}"/>
             {{# }else{ }}
-            <img src="assets/img/fti/{{item.type}}.png"/>
+            <img src="assets/img/fti/{{item.suffix}}.png"/>
             {{# } }}
         </div>
         <div class="file-list-name">
-            {{# if(item.isDir){ }}
-            {{item.name}}
+            {{# if(item.isFold){ }}
+            {{item.originalFileName}}
             {{# }else{ }}
-            {{item.name}}.{{item.suffix}}
+            {{item.originalFileName}}
             {{# } }}
         </div>
     </div>

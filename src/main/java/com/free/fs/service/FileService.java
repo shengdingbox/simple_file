@@ -1,9 +1,9 @@
 package com.free.fs.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.free.fs.common.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
+import com.zhouzifei.tool.dto.VirtualFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author dinghao
  * @date 2021/3/15
  */
-public interface FileService extends IService<FilePojo> {
+public interface FileService{
 
     /**
      * 获取文件列表
@@ -25,7 +25,7 @@ public interface FileService extends IService<FilePojo> {
      * @param pojo
      * @return
      */
-    List<FilePojo> getList(FilePojo pojo);
+    public List<VirtualFile> getList(FilePojo pojo, String fileType);
 
     /**
      * 获取文件树结构列表
@@ -92,14 +92,6 @@ public interface FileService extends IService<FilePojo> {
      * @return
      */
     boolean updateByName(FilePojo pojo);
-
-    /**
-     * 根据id集合批量删除
-     *
-     * @param id
-     * @return
-     */
-    boolean deleteByIds(Long id);
 
     /**
      * 移动文件

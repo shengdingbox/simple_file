@@ -1,6 +1,5 @@
 package com.free.fs.common.utils;
 
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -20,6 +19,8 @@ import java.util.Objects;
 public class RequestHolder {
 
     private static final String UNKNOWN = "unknown";
+    private static final String COMMA = ",";
+
 
     /**
      * 获取HttpServletRequest请求
@@ -61,8 +62,8 @@ public class RequestHolder {
         HttpHeaders headers = request.getHeaders();
         String ip = headers.getFirst("x-forwarded-for");
         if (ip != null && ip.length() != 0 && !UNKNOWN.equalsIgnoreCase(ip)) {
-            if (ip.contains(StringPool.COMMA)) {
-                ip = ip.split(StringPool.COMMA)[0];
+            if (ip.contains(COMMA)) {
+                ip = ip.split(COMMA)[0];
             }
         }
         if (ip == null || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {

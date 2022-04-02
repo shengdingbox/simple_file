@@ -5,6 +5,7 @@ import com.free.fs.common.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
+import com.zhouzifei.tool.dto.VirtualFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,7 +29,7 @@ import java.util.*;
 @RestController
 @RequestMapping("file")
 @RequiredArgsConstructor
-public class FileController extends BaseController {
+public class FileController{
 
     @Autowired
     private final FileService fileService;
@@ -40,8 +41,8 @@ public class FileController extends BaseController {
      * @return
      */
     @GetMapping({"", "/list"})
-    public R getList(FilePojo pojo) {
-        List<FilePojo> list = fileService.getList(pojo);
+    public R getList(FilePojo pojo,String fileType) {
+        List<VirtualFile> list = fileService.getList(pojo,fileType);
         return R.succeed(list, "查询成功");
     }
 
@@ -204,9 +205,9 @@ public class FileController extends BaseController {
     @RequiresPermissions("file:delete")
     @PostMapping("/deleteByIds")
     public R deleteByIds(Long id) {
-        if (fileService.deleteByIds(id)) {
-            return R.succeed("删除成功");
-        }
+//        if (fileService.deleteByIds(id)) {
+//            return R.succeed("删除成功");
+//        }
         return R.failed("删除失败");
 
     }
