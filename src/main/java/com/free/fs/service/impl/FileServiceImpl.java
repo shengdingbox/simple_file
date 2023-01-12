@@ -6,7 +6,7 @@ import com.free.fs.common.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
-import com.zhouzifei.tool.config.FileProperties;
+import com.zhouzifei.tool.config.SimpleFsProperties;
 import com.zhouzifei.tool.consts.StorageTypeConst;
 import com.zhouzifei.tool.dto.VirtualFile;
 import com.zhouzifei.tool.entity.FileListRequesr;
@@ -34,17 +34,19 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public  class FileServiceImpl  implements FileService {
+public class FileServiceImpl implements FileService {
 
     @Autowired
-    FileProperties fileProperties;
+    SimpleFsProperties simpleFsProperties;
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<VirtualFile> getList(FilePojo pojo,String fileType) {
-        final FileUploader fileUploader = new FileUploader();
-        final StorageTypeConst storageTypeConst = StorageTypeConst.getEnumType(fileType);
-        final ApiClient apiClient = fileUploader.getApiClient(storageTypeConst, fileProperties);
+    public List<VirtualFile> getList(FilePojo pojo, String fileType) {
+        final FileUploader fileUploader = FileUploader.builder()
+                .simpleFsProperties(simpleFsProperties)
+                .storageType(fileType)
+                .build();
+        final ApiClient apiClient = fileUploader.execute();
         final FileListRequesr fileListRequesr = new FileListRequesr();
         fileListRequesr.setFold(pojo.getDirIds());
         return apiClient.fileList(fileListRequesr);
@@ -90,24 +92,25 @@ public  class FileServiceImpl  implements FileService {
 
     private List<Dtree> getChildrens(Dtree root, List<Dtree> all) {
         return all.stream()
-                  .filter(m -> Objects.equals(m.getParentId(), root.getId()))
-                    .peek((m) -> m.setChildren(getChildrens(m, all)))
+                .filter(m -> Objects.equals(m.getParentId(), root.getId()))
+                .peek((m) -> m.setChildren(getChildrens(m, all)))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public R upload(MultipartFile[] files, String dirIds, String fileType){
+    public R upload(MultipartFile[] files, String dirIds, String fileType) {
         if (files == null || files.length == 0) {
             throw new BusinessException("文件不能为空");
         }
         for (MultipartFile file : files) {
-            FilePojo filePojo = uploadFile(file,fileType);
+            FilePojo filePojo = uploadFile(file, fileType);
             if (filePojo == null) {
                 return R.failed("文件：" + file.getOriginalFilename() + "上传失败");
             }
         }
         return R.succeed("上传成功");
     }
+
     /**
      * 上传文件
      *
@@ -115,9 +118,11 @@ public  class FileServiceImpl  implements FileService {
      * @param fileType
      */
     protected FilePojo uploadFile(MultipartFile file, String fileType) {
-        final FileUploader fileUploader = new FileUploader();
-        final StorageTypeConst storageTypeConst = StorageTypeConst.getEnumType(fileType);
-        final ApiClient apiClient = fileUploader.getApiClient(storageTypeConst, fileProperties);
+        final FileUploader fileUploader = FileUploader.builder()
+                .simpleFsProperties(simpleFsProperties)
+                .storageType(fileType)
+                .build();
+        final ApiClient apiClient = fileUploader.execute();
         final VirtualFile virtualFile = apiClient.uploadFile(file);
         log.debug(virtualFile.toString());
         final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
@@ -134,7 +139,7 @@ public  class FileServiceImpl  implements FileService {
         }
         for (MultipartFile file : files) {
             FilePojo filePojo = uploadFileSharding(file, session);
-            if(filePojo == null){
+            if (filePojo == null) {
                 return R.failed("文件：" + file.getOriginalFilename() + "上传失败");
             }
         }
@@ -153,7 +158,7 @@ public  class FileServiceImpl  implements FileService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean delete(String url){
+    public boolean delete(String url) {
         //在删除七牛云
         deleteFile(url);
         return true;
@@ -206,6 +211,7 @@ public  class FileServiceImpl  implements FileService {
         return true;
         //return baseMapper.updateById(updPojo) > 0;
     }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean move(String ids, Long parentId) {
