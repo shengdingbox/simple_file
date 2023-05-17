@@ -1,0 +1,31 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://mysql-svc:3306/free-fs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: Mrtoo902li
+    driver-class-name: com.mysql.cj.jdbc.Driver
+##### mybatis-plus打印完整sql(只适用于开发环境)
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+simple-fs:
+  oss:
+    accessKey: LTAI5tHbbFHkxe8voEdbx5kt
+    secretKey: 7DY5iCylfojvUfzkKR3tYWvrUhKeHV
+    endpoint: oss-cn-beijing.aliyuncs.com
+    domain-url: https://simple-fs.oss-accelerate.aliyuncs.com
+    bucket-name: simple-fs
+  github:
+    repository: static
+    user: shengdingbox
+    token: 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
+  smms:
+    user-name: xiaofei
+    token: Lt6rQon73DOyNrZaeCtaZxrUf6zLfE86
+    pass-word: ZHOUdabao521
+  upai:
+    user-name: dabao
+    pass-word: coIuTcA5nNv9PZue2ZtkLQ1NQzGP3nKb
+    url: dabao.test.upcdn.net
+    bucket-name: dabao
