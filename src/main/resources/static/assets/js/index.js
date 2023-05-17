@@ -36,7 +36,7 @@ layui.config({
         layer.load(2);
         $.get('/file', {
             dirIds: dirIds,
-            fileType: function (){
+            fileType: function () {
                 return $("#typeId").val();
             }
         }, function (res) {
@@ -101,7 +101,7 @@ layui.config({
             dirIds: function () {
                 return $('#tvFPId').text();
             },
-            fileType: function (){
+            fileType: function () {
                 return $("#typeId").val();
             }
         }, choose: function (obj) {
@@ -671,6 +671,11 @@ layui.config({
             var url = $("#logout").data('url');
             location.replace(url ? url : "/")
         })
+    });
+    //退出
+    $('#setting').click(function () {
+        var url = $("#setting").data('url');
+        location.replace(url ? url : "/")
     });
     $("#typeId").change(function () {
         var opt = $("#typeId").val();

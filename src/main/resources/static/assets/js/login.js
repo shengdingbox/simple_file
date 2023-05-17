@@ -12,7 +12,10 @@ layui.use(['jquery', 'layer', 'form'], function () {
         $.post('login', obj.field, function (res) {
             if (200 === res.code) {
                 layer.msg('登录成功', {icon: 1, time: 1500}, function () {
-                    location.replace('./');
+                    login = 1;
+                    localStorage.setItem('login', login);
+                    localStorage.setItem('username', obj.field.username);
+                    location.replace('./admin');
                 });
             } else {
                 layer.closeAll('loading');

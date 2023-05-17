@@ -21,7 +21,6 @@ public class IndexController{
         //model.addAttribute("loginUser", getLoginUser());
         return "index";
     }
-
     private Map<String, String> getFileType() {
         final Map<String, String> map = StorageTypeConst.getMap();
         return map;

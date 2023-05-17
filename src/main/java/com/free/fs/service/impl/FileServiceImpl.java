@@ -6,10 +6,12 @@ import com.free.fs.common.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
+import com.zhouzifei.tool.config.FileAutoConfiguration;
 import com.zhouzifei.tool.config.SimpleFsProperties;
 import com.zhouzifei.tool.consts.StorageTypeConst;
 import com.zhouzifei.tool.dto.VirtualFile;
 import com.zhouzifei.tool.entity.FileListRequesr;
+//import com.zhouzifei.tool.fileClient.ApiClientBuild;
 import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -36,20 +35,23 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FileServiceImpl implements FileService {
 
-    @Autowired
-    SimpleFsProperties simpleFsProperties;
+//    @Autowired
+//    FileUploader fileUploader;
 
     @SuppressWarnings("unchecked")
     @Override
     public List<VirtualFile> getList(FilePojo pojo, String fileType) {
-        final FileUploader fileUploader = FileUploader.builder()
-                .simpleFsProperties(simpleFsProperties)
-                .storageType(fileType)
-                .build();
-        final ApiClient apiClient = fileUploader.execute();
-        final FileListRequesr fileListRequesr = new FileListRequesr();
-        fileListRequesr.setFold(pojo.getDirIds());
-        return apiClient.fileList(fileListRequesr);
+//        final FileUploader fileUploader1 = new FileUploader();
+//        fileUploader1.getApiClient(StorageTypeConst.GITHUB,s)
+//        final FileUploader fileUploader = FileUploader.builder()
+//                .simpleFsProperties(simpleFsProperties)
+//                .storageType(fileType)
+//                .build();
+//        final ApiClient apiClient = fileUploader.execute();
+//        final FileListRequesr fileListRequesr = new FileListRequesr();
+//        fileListRequesr.setFold(pojo.getDirIds());
+//        return apiClient.fileList(fileListRequesr);
+        return  new ArrayList<>();
     }
 
     @SuppressWarnings("unchecked")
@@ -118,17 +120,18 @@ public class FileServiceImpl implements FileService {
      * @param fileType
      */
     protected FilePojo uploadFile(MultipartFile file, String fileType) {
-        final FileUploader fileUploader = FileUploader.builder()
-                .simpleFsProperties(simpleFsProperties)
-                .storageType(fileType)
-                .build();
-        final ApiClient apiClient = fileUploader.execute();
-        final VirtualFile virtualFile = apiClient.uploadFile(file);
-        log.debug(virtualFile.toString());
-        final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
-        filePojo.setUrl(virtualFile.getFullFilePath());
-        filePojo.setSource(fileType);
-        return filePojo;
+//        final FileUploader fileUploader = FileUploader.builder()
+//                .simpleFsProperties(simpleFsProperties)
+//                .storageType(fileType)
+//                .build();
+//        final ApiClient apiClient = fileUploader.execute();
+//        final VirtualFile virtualFile = apiClient.uploadFile(file);
+//        log.debug(virtualFile.toString());
+//        final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
+//        filePojo.setUrl(virtualFile.getFullFilePath());
+//        filePojo.setSource(fileType);
+//        return filePojo;
+        return  new FilePojo();
     }
 
 

@@ -36,6 +36,7 @@
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <hutool.version>5.3.7</hutool.version>
         <simpleFS.version>1.0.2.RELEASES</simpleFS.version>
+        <mybatis-plus-boot-starter.version>3.3.0</mybatis-plus-boot-starter.version>
     </properties>
 
     <dependencies>
@@ -170,6 +171,15 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis-plus-boot-starter.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
     </dependencies>
 
