@@ -1,20 +1,23 @@
 package com.free.fs.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.exception.BusinessException;
 import com.free.fs.common.utils.FileUtil;
 import com.free.fs.common.utils.R;
+import com.free.fs.mapper.FileMapper;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
-import com.zhouzifei.tool.config.FileAutoConfiguration;
 import com.zhouzifei.tool.config.SimpleFsProperties;
-import com.zhouzifei.tool.consts.StorageTypeConst;
 import com.zhouzifei.tool.dto.VirtualFile;
 import com.zhouzifei.tool.entity.FileListRequesr;
-//import com.zhouzifei.tool.fileClient.ApiClientBuild;
 import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
+import com.zhouzifei.tool.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,46 +38,46 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FileServiceImpl implements FileService {
 
-//    @Autowired
-//    FileUploader fileUploader;
+    @Autowired
+    SimpleFsProperties simpleFsProperties;
+
+    @Autowired
+    FileMapper fileMapper;
 
     @SuppressWarnings("unchecked")
     @Override
     public List<VirtualFile> getList(FilePojo pojo, String fileType) {
-//        final FileUploader fileUploader1 = new FileUploader();
-//        fileUploader1.getApiClient(StorageTypeConst.GITHUB,s)
-//        final FileUploader fileUploader = FileUploader.builder()
-//                .simpleFsProperties(simpleFsProperties)
-//                .storageType(fileType)
-//                .build();
-//        final ApiClient apiClient = fileUploader.execute();
-//        final FileListRequesr fileListRequesr = new FileListRequesr();
-//        fileListRequesr.setFold(pojo.getDirIds());
-//        return apiClient.fileList(fileListRequesr);
-        return  new ArrayList<>();
+        final FileUploader fileUploader = FileUploader.builder()
+                .simpleFsProperties(simpleFsProperties)
+                .storageType(fileType)
+                .build();
+        final ApiClient apiClient = fileUploader.execute();
+        final FileListRequesr fileListRequesr = new FileListRequesr();
+        fileListRequesr.setFold(pojo.getDirIds());
+        return apiClient.fileList(fileListRequesr);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Dtree> getTreeList(FilePojo pojo) {
-//        List<FilePojo> filePojos = baseMapper.selectList(
-//                new LambdaQueryWrapper<FilePojo>()
-//                        .eq(pojo.getIsDir()!=null && pojo.getIsDir(), FilePojo::getIsDir, pojo.getIsDir())
-//                        .orderByDesc(FilePojo::getIsDir, FilePojo::getPutTime)
-//        );
-//        List<Dtree> dtrees = new ArrayList<>();
-//        filePojos.forEach(item -> {
-//            Dtree dtree = new Dtree();
-//            BeanUtils.copyProperties(item,dtree);
-//            dtree.setTitle(item.getName());
-//            //设置图标
-//            if (dtree.getIsDir()) {
-//                dtree.setIconClass(CommonConstant.DTREE_ICON_1);
-//            } else {
-//                dtree.setIconClass(CommonConstant.DTREE_ICON_2);
-//            }
-//            dtrees.add(dtree);
-//        });
+        List<FilePojo> filePojos = fileMapper.selectList(
+                new LambdaQueryWrapper<FilePojo>()
+                        .eq(pojo.getIsDir()!=null && pojo.getIsDir(), FilePojo::getIsDir, pojo.getIsDir())
+                        .orderByDesc(FilePojo::getIsDir, FilePojo::getPutTime)
+        );
+        List<Dtree> dtrees = new ArrayList<>();
+        filePojos.forEach(item -> {
+            Dtree dtree = new Dtree();
+            BeanUtils.copyProperties(item,dtree);
+            dtree.setTitle(item.getName());
+            //设置图标
+            if (dtree.getIsDir()) {
+                dtree.setIconClass(CommonConstant.DTREE_ICON_1);
+            } else {
+                dtree.setIconClass(CommonConstant.DTREE_ICON_2);
+            }
+            dtrees.add(dtree);
+        });
         return null;
     }
 
@@ -120,18 +123,17 @@ public class FileServiceImpl implements FileService {
      * @param fileType
      */
     protected FilePojo uploadFile(MultipartFile file, String fileType) {
-//        final FileUploader fileUploader = FileUploader.builder()
-//                .simpleFsProperties(simpleFsProperties)
-//                .storageType(fileType)
-//                .build();
-//        final ApiClient apiClient = fileUploader.execute();
-//        final VirtualFile virtualFile = apiClient.uploadFile(file);
-//        log.debug(virtualFile.toString());
-//        final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
-//        filePojo.setUrl(virtualFile.getFullFilePath());
-//        filePojo.setSource(fileType);
-//        return filePojo;
-        return  new FilePojo();
+        final FileUploader fileUploader = FileUploader.builder()
+                .simpleFsProperties(simpleFsProperties)
+                .storageType(fileType)
+                .build();
+        final ApiClient apiClient = fileUploader.execute();
+        final VirtualFile virtualFile = apiClient.uploadFile(file);
+        log.debug(virtualFile.toString());
+        final FilePojo filePojo = FileUtil.buildFilePojo(file, virtualFile.getOriginalFileName());
+        filePojo.setUrl(virtualFile.getFullFilePath());
+        filePojo.setSource(fileType);
+        return filePojo;
     }
 
 
@@ -184,53 +186,51 @@ public class FileServiceImpl implements FileService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean addFolder(FilePojo pojo) {
-//        String dirId = pojo.getDirIds().substring(pojo.getDirIds().lastIndexOf(CommonConstant.DIR_SPLIT) + 1);
-//        if (count > 0) {
-//            throw new BusinessException("当前目录名称已存在，请修改后重试！");
-//        }
-//        return baseMapper.insert(pojo) > 0;
-        return true;
+        String dirId = pojo.getDirIds().substring(pojo.getDirIds().lastIndexOf(CommonConstant.DIR_SPLIT) + 1);
+        if (0 > 0) {
+            throw new BusinessException("当前目录名称已存在，请修改后重试！");
+        }
+        return fileMapper.insert(pojo) > 0;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateByName(FilePojo pojo) {
-//        if (pojo.getName().equals(pojo.getRename())) {
-//            throw new BusinessException("当前名称与原始名称相同，请修改后重试！");
-//        }
-//        FilePojo p = baseMapper.selectById(pojo.getId());
-//        Integer count = baseMapper.selectCount(
-//                new LambdaQueryWrapper<FilePojo>()
-//                        .eq(FilePojo::getName, pojo.getRename())
-//                        .eq(FilePojo::getIsDir,p.getIsDir())
-//                        .eq(FilePojo::getParentId,p.getParentId())
-//        );
-//        if (count > 0) {
-//            throw new BusinessException("当前目录已存在该名称,请修改后重试！");
-//        }
-//        FilePojo updPojo = new FilePojo();
-//        updPojo.setId(pojo.getId());
-//        updPojo.setName(pojo.getRename());
-        return true;
-        //return baseMapper.updateById(updPojo) > 0;
+        if (pojo.getName().equals(pojo.getRename())) {
+            throw new BusinessException("当前名称与原始名称相同，请修改后重试！");
+        }
+        FilePojo p = fileMapper.selectById(pojo.getId());
+        Integer count = fileMapper.selectCount(
+                new LambdaQueryWrapper<FilePojo>()
+                        .eq(FilePojo::getName, pojo.getRename())
+                        .eq(FilePojo::getIsDir,p.getIsDir())
+                        .eq(FilePojo::getParentId,p.getParentId())
+        );
+        if (count > 0) {
+            throw new BusinessException("当前目录已存在该名称,请修改后重试！");
+        }
+        FilePojo updPojo = new FilePojo();
+        updPojo.setId(pojo.getId());
+        updPojo.setName(pojo.getRename());
+        return fileMapper.updateById(updPojo) > 0;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean move(String ids, Long parentId) {
-//        if (StringUtils.isEmpty(ids)) {
-//            throw new BusinessException("请选择要移动的文件或目录");
-//        }
-//        String[] idsArry = ids.split(CommonConstant.STRING_SPLIT);
-//        FilePojo updatePojo;
-//        for (String id : idsArry) {
-//            updatePojo = new FilePojo();
-//            updatePojo.setId(Long.parseLong(id));
-//            updatePojo.setParentId(parentId);
-//            if (baseMapper.updateById(updatePojo) <= 0) {
-//                throw new BusinessException("移动失败");
-//            }
-//        }
+        if (StringUtils.isEmpty(ids)) {
+            throw new BusinessException("请选择要移动的文件或目录");
+        }
+        String[] idsArry = ids.split(CommonConstant.STRING_SPLIT);
+        FilePojo updatePojo;
+        for (String id : idsArry) {
+            updatePojo = new FilePojo();
+            updatePojo.setId(Long.parseLong(id));
+            updatePojo.setParentId(parentId);
+            if (fileMapper.updateById(updatePojo) <= 0) {
+                throw new BusinessException("移动失败");
+            }
+        }
         return true;
     }
 

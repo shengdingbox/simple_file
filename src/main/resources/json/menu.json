@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "会员管理",
+    "name": "存储管理",
     "icon": "&#xe6b8;",
     "url": "",
     "children": [
@@ -9,13 +9,13 @@
         "id": 2,
         "name": "AWS存储",
         "icon": "",
-        "url": "./admin/list.html"
+        "url": "./admin/aws/list.html"
       },
       {
         "id": 3,
         "name": "百度云存储",
         "icon": "",
-        "url": "./pages/member/del.html"
+        "url": "./pages/member/del1.html"
       },
       {
         "id": 3,

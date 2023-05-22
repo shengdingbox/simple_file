@@ -34,7 +34,7 @@ public class ShiroConfig {
         shiroFilter.setSecurityManager(securityManager);
         // 登录配置
         shiroFilter.setLoginUrl("/login");
-        shiroFilter.setSuccessUrl("/");
+        shiroFilter.setSuccessUrl("/admin");
         shiroFilter.setUnauthorizedUrl("/error/403");
         // 自定义过滤器
         Map<String, Filter> filtersMap = new LinkedHashMap<>();
@@ -44,6 +44,7 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitions = new LinkedHashMap<>();
         filterChainDefinitions.put("/assets/**", "anon");
         filterChainDefinitions.put("/login", "anon");
+        filterChainDefinitions.put("/file", "anon");
         filterChainDefinitions.put("/reg", "anon");
         filterChainDefinitions.put("/logout", "logout");
         filterChainDefinitions.put("/**", "mlfc,user");

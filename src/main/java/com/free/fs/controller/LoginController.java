@@ -46,28 +46,6 @@ public class LoginController extends BaseController {
         }
         return "login";
     }
-
-    /**
-     * 注册页
-     */
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
-    }
-    /**
-     * 注册页
-     */
-    @GetMapping("/welcome.html")
-    public String welcome() {
-        return "welcome";
-    }
-    /**
-     * 注册页
-     */
-    @GetMapping("/admin/list.html")
-    public String adminList() {
-        return "admin/list";
-    }
     /**
      * 注册页
      */

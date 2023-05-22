@@ -15,7 +15,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
                     login = 1;
                     localStorage.setItem('login', login);
                     localStorage.setItem('username', obj.field.username);
-                    location.replace('./admin');
+                    location.replace('./admin.html');
                 });
             } else {
                 layer.closeAll('loading');
@@ -32,7 +32,7 @@ layui.use(['jquery', 'layer', 'form'], function () {
         $.post('reg', obj.field, function (res) {
             if (200 === res.code) {
                 layer.msg(res.msg, {icon: 1, time: 1500}, function () {
-                    location.replace('/login');
+                    location.replace('/login.html');
                 });
             } else {
                 layer.closeAll('loading');
