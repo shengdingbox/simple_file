@@ -1,9 +1,10 @@
-FROM openjdk:8u252
+FROM maven:latest
 
 ENV TZ=Asia/Shanghai
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+RUN mvn clean package
 
 ADD target/*.jar /root/app.jar
 
