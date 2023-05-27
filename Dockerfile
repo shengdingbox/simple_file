@@ -5,7 +5,7 @@ ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN ls -l
-RUN pwd
+RUN find / -name "pom.xml"
 RUN mvn clean package
 
 ADD target/*.jar /root/app.jar
