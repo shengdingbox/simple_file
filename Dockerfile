@@ -4,7 +4,7 @@ ENV TZ=Asia/Shanghai
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN ls -l
+RUN ls -l /var/lib/docker/tmp
 
 
 ADD target/*.jar /root/app.jar
