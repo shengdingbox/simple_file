@@ -35,7 +35,7 @@
         <commons-codec.version>1.10</commons-codec.version>
         <easy-captcha.version>1.6.2</easy-captcha.version>
         <hutool.version>5.3.7</hutool.version>
-        <simpleFS.version>1.0.2.RELEASES</simpleFS.version>
+        <simpleFS.version>1.0.4.RELEASES</simpleFS.version>
         <mybatis-plus-boot-starter.version>3.3.0</mybatis-plus-boot-starter.version>
     </properties>
 
