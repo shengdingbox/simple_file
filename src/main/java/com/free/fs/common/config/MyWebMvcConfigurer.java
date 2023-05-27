@@ -49,23 +49,23 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(new OptionsInterceptor()).addPathPatterns("/**");
     }
 
-    @SneakyThrows
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        File fileDir = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "templates");
-        final String fileDirPath = fileDir.getPath();
-        if (!fileDir.exists()) {
-            System.out.println(fileDirPath);
-            System.out.println("文件目录问题");
-        }
-        System.out.println(fileDirPath);
-        List<String> list = new ArrayList<>();
-        getFileName(fileDir, list);
-        final List<String> collect = list.stream().map(t -> t.replace(fileDirPath, "")).collect(Collectors.toList());
-        for (String s : collect) {
-            registry.addViewController(s).setViewName(s.replace(".html",""));
-        }
-    }
+//    @SneakyThrows
+//    @Override
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//        File fileDir = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "templates");
+//        final String fileDirPath = fileDir.getPath();
+//        if (!fileDir.exists()) {
+//            System.out.println(fileDirPath);
+//            System.out.println("文件目录问题");
+//        }
+//        System.out.println(fileDirPath);
+//        List<String> list = new ArrayList<>();
+//        getFileName(fileDir, list);
+//        final List<String> collect = list.stream().map(t -> t.replace(fileDirPath, "")).collect(Collectors.toList());
+//        for (String s : collect) {
+//            registry.addViewController(s).setViewName(s.replace(".html",""));
+//        }
+//    }
 
     public void getFileName(File fileDir, List<String> fileNames) {
         File[] files = fileDir.listFiles();

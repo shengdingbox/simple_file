@@ -27,7 +27,7 @@
         "id": 3,
         "name": "GITHUB存储",
         "icon": "",
-        "url": "./pages/member/del.html"
+        "url": "./admin/list.html?source=github"
       },
       {
         "id": 3,
