@@ -4,7 +4,8 @@ ENV TZ=Asia/Shanghai
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN LS -L
+RUN ls -l
+RUN pwd
 RUN mvn clean package
 
 ADD target/*.jar /root/app.jar
