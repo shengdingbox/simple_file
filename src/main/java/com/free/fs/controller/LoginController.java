@@ -1,12 +1,11 @@
 package com.free.fs.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.free.fs.common.utils.R;
+import com.free.fs.dto.MenuDTO;
+import com.free.fs.utils.R;
 import com.free.fs.model.User;
 import com.free.fs.service.UserService;
-import com.google.gson.JsonObject;
 import com.wf.captcha.ArithmeticCaptcha;
 import com.zhouzifei.tool.util.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.apache.shiro.authc.ExcessiveAttemptsException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.List;
 
 /**
  * LoginController
@@ -34,7 +35,9 @@ import java.nio.file.Files;
 @RequiredArgsConstructor
 public class LoginController extends BaseController {
 
+    @Autowired
     private final UserService userService;
+
 
     /**
      * 登录页
@@ -46,6 +49,7 @@ public class LoginController extends BaseController {
         }
         return "login";
     }
+
     /**
      * 注册页
      */
@@ -108,31 +112,14 @@ public class LoginController extends BaseController {
         }
         return R.failed("注册失败");
     }
+
     /**
      * 注册
      */
     @PostMapping("/admin/user/menu")
     @ResponseBody
     public R menu(String username) {
-        File file = new File("/Users/Dabao/develop/workspace/zhouzifei/simple-file/src/main/resources/json/menu.json");
-        try {
-            FileReader fileReader = new FileReader(file);
-            Reader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8);
-            int ch= 0;
-            StringBuffer sb = new StringBuffer();
-            while((ch = reader.read()) != -1) {
-                sb.append((char) ch);
-            }
-            fileReader.close();
-            reader.close();
-            String jsonStr = sb.toString();
-            final JSONArray jsonObject = JSONArray.parseArray(jsonStr);
-            final JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("menu",jsonObject);
-            return R.of(jsonObject1,1,"ok");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return R.failed("注册失败");
+        List<MenuDTO> jsonObject = userService.getMenu();
+        return R.of(jsonObject, 1, "ok");
     }
 }

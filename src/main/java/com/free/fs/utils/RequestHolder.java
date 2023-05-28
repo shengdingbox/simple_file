@@ -1,4 +1,4 @@
-package com.free.fs.common.utils;
+package com.free.fs.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

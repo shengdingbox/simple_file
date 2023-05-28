@@ -1,4 +1,4 @@
-package com.free.fs.common.utils;
+package com.free.fs.utils;
 
 import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.exception.BusinessException;
@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * 上传类型判断工具类

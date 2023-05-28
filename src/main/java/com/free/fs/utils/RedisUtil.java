@@ -1,4 +1,4 @@
-package com.free.fs.common.utils;
+package com.free.fs.utils;
 
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.Cursor;

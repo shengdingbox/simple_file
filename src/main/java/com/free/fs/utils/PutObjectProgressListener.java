@@ -1,4 +1,4 @@
-package com.free.fs.common.utils;
+package com.free.fs.utils;
 
 import com.aliyun.oss.event.ProgressEvent;
 import com.aliyun.oss.event.ProgressEventType;

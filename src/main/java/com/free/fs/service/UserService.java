@@ -1,6 +1,10 @@
 package com.free.fs.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.free.fs.dto.MenuDTO;
 import com.free.fs.model.User;
+
+import java.util.List;
 
 /**
  * 用户表业务接口
@@ -17,4 +21,6 @@ public interface UserService{
      * @return
      */
     boolean addUser(User user);
+
+    List<MenuDTO> getMenu();
 }

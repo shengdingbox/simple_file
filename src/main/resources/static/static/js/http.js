@@ -55,7 +55,7 @@ layui.define(['jquery', 'layer'], function(exports) {
         },
         success: function(res) {
           if(res.code === 1){
-            var menuList = res.data.menu;
+            var menuList = res.data;
             var items = [];
             var _ul = $('<ul></ul>').addClass('nav').attr('id', 'nav');
             $.each(menuList, function(index, val) {

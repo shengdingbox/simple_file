@@ -1,6 +1,6 @@
 package com.free.fs.service;
 
-import com.free.fs.common.utils.R;
+import com.free.fs.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.zhouzifei.tool.dto.VirtualFile;

@@ -1,11 +1,10 @@
 package com.free.fs.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.exception.BusinessException;
-import com.free.fs.common.utils.FileUtil;
-import com.free.fs.common.utils.R;
+import com.free.fs.utils.FileUtil;
+import com.free.fs.utils.R;
 import com.free.fs.mapper.FileMapper;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
