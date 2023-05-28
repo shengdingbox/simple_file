@@ -1,8 +1,9 @@
 spring:
   datasource:
-    url: jdbc:mysql://xxxxxxxxx:3306/free-fs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
-    username: xxxxxxxxx
-    password: xxxxxxxxx
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://81.71.23.197:32306/free-fs?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&serverTimezone=Asia/Shanghai
+    username: root
+    password: Mrtoo902li
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 fs:
