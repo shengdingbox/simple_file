@@ -45,6 +45,7 @@ public class ShiroConfig {
         filterChainDefinitions.put("/assets/**", "anon");
         filterChainDefinitions.put("/login", "anon");
         filterChainDefinitions.put("/file", "anon");
+        filterChainDefinitions.put("/", "anon");
         filterChainDefinitions.put("/reg", "anon");
         filterChainDefinitions.put("/logout", "logout");
         filterChainDefinitions.put("/**", "mlfc,user");

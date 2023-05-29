@@ -8,37 +8,10 @@
     <link rel="stylesheet" th:href="@{/assets/modules/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/assets/modules/dtree/dtree.css}">
     <link rel="stylesheet" th:href="@{/assets/modules/dtree/font/dtreefont.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/common.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/filelist.css}">
     <link rel="stylesheet" th:href="@{/assets/css/input.css}">
 </head>
 <body>
-<div class="header">
-    <div class="layui-container">
-        <div class="layui-logo">
-            <img th:src="@{/assets/img/logo.png}"/><cite><span class="layui-hide-xs">文件服务器</span></cite>
-        </div>
-    </div>
-
-    <ul class="layui-nav layui-layout-right">
-        <li class="layui-nav-item layui-hide-xs" lay-unselect>
-            <a href="javascript:void(0)" id="fullScreen" title="全屏"><i class="layui-icon layui-icon-screen-full"></i></a>
-        </li>
-        <li class="layui-nav-item" lay-unselect>
-            <a><img src="http://images.nowcoder.com/head/818t.png" class="layui-nav-img"><cite
-                    text="管理员"></cite></a>
-            <dl class="layui-nav-child">
-                <dd lay-unselect>
-                    <a href="javascript:void(0)" id="logout" data-url="/logout">
-                        <i class="layui-icon layui-icon-logout"></i>退出
-                    </a>
-                    <a href="javascript:void(0)" id="setting" data-url="/login">
-                        <i class="layui-icon layui-icon-logout"></i>设置
-                    </a>
-                </dd>
-            </dl>
-        </li>
-    </ul>
-</div>
 <div class="layui-container" style="padding-top: 15px;">
     <div class="layui-card">
         <div class="layui-card-header">当前位置：<span id="tvFP">/</span><span id="tvFPId" hidden>/</span></div>
@@ -54,9 +27,9 @@
                 </button>
                 <button style="display: none" id="btnDilaog" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon">&#xe634;</i>弹窗选择
                 </button>
-                <div class="layui-btn layui-btn-sm icon-btn">
+                <div class="layui-btn layui-btn-sm icon-btn" hidden="hidden">
                     <select name="city" lay-verify="required" οnchange="gradeChange()" id="typeId" >
-                        <option th:each="item:${fileType}" th:value="${item.key}" th:text="${item.value}" class="optionClass"></option>
+                        <option  th:value="${source}" th:text="${source}" class="optionClass"></option>
                     </select>
                 </div>
                 <button shiro:hasPermission="dir:manage" id="dirDilaog" class="layui-btn layui-btn-sm icon-btn"><i

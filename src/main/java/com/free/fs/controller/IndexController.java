@@ -28,8 +28,12 @@ public class IndexController{
 
     @GetMapping("/fileChoose")
     public String fileChoose() {
-
         return "fileChoose";
+    }
+    @GetMapping("/filelist.html")
+    public String filelisthtml(String source,Model model) {
+        model.addAttribute("source", source);
+        return "filelist.html";
     }
 
     /**
