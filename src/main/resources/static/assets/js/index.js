@@ -37,7 +37,7 @@ layui.config({
         $.get('/file', {
             dirIds: dirIds,
             fileType: function () {
-                return $("#typeId").val();
+                return $("#source").text();
             }
         }, function (res) {
             layer.closeAll('loading');

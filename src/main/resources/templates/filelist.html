@@ -14,7 +14,7 @@
 <body>
 <div class="layui-container" style="padding-top: 15px;">
     <div class="layui-card">
-        <div class="layui-card-header">当前位置：<span id="tvFP">/</span><span id="tvFPId" hidden>/</span></div>
+        <div class="layui-card-header">当前位置:<span id="source" th:text="${source}"/><span id="tvFP">/</span><span id="tvFPId" hidden>/</span></div>
         <div class="layui-card-body">
             <div class="btnDiv">
                 <button id="btnBack" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon">&#xe65c;</i>返回上级
@@ -27,13 +27,16 @@
                 </button>
                 <button style="display: none" id="btnDilaog" class="layui-btn layui-btn-sm layui-btn-primary icon-btn"><i class="layui-icon">&#xe634;</i>弹窗选择
                 </button>
-                <div class="layui-btn layui-btn-sm icon-btn" hidden="hidden">
-                    <select name="city" lay-verify="required" οnchange="gradeChange()" id="typeId" >
-                        <option  th:value="${source}" th:text="${source}" class="optionClass"></option>
-                    </select>
-                </div>
+<!--                <div class="layui-btn layui-btn-sm icon-btn" hidden="hidden">-->
+<!--                    <select name="city" lay-verify="required" οnchange="gradeChange()" id="typeId" >-->
+<!--                        <option  th:value="${source}" th:text="${source}" class="optionClass"></option>-->
+<!--                    </select>-->
+<!--                </div>-->
                 <button shiro:hasPermission="dir:manage" id="dirDilaog" class="layui-btn layui-btn-sm icon-btn"><i
                         class="layui-icon layui-icon-app"></i>目录管理
+                </button>
+                <button shiro:hasPermission="dir:manage" id="dirSet" class="layui-btn layui-btn-sm icon-btn" onclick="WeAdminShow('添加用户','./add.html',600,400)"><i
+                        class="layui-icon layui-icon-app" ></i>存储管理
                 </button>
             </div>
 <!--            <div class="btnDiv">-->
@@ -214,5 +217,7 @@
 <script type="text/javascript" th:src="@{/assets/modules/layui/layui.js}"></script>
 <script type="text/javascript" th:src="@{/assets/modules/clipboard.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/eleDel.js}" charset="utf-8"></script>
+
 </body>
 </html>

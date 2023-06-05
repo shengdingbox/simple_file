@@ -29,11 +29,9 @@ public class AdminController extends BaseController {
     /**
      * 注册页
      */
-    @GetMapping("/admin/list.html")
+    @GetMapping("/add.html")
     public String add(String source, Model model) {
-        final FilePojo pojo = new FilePojo();
-        pojo.setDirIds("/");
-        final List<VirtualFile> list = fileService.getList(pojo, source);
+        fileService.getTypeInfo(source);
         model.addAttribute("list", list);
         return "admin/list";
     }
