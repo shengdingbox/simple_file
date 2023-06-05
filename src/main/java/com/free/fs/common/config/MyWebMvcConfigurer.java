@@ -1,6 +1,7 @@
 package com.free.fs.common.config;
 
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
@@ -11,10 +12,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +27,9 @@ import java.util.stream.Collectors;
  */
 @Configuration
 public class MyWebMvcConfigurer implements WebMvcConfigurer {
+
+    @Value("${datasource.db.path}")
+    String dbPath;
 
     /**
      * 支持跨域
@@ -49,23 +52,22 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
         registry.addInterceptor(new OptionsInterceptor()).addPathPatterns("/**");
     }
 
-//    @SneakyThrows
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        File fileDir = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "templates");
-//        final String fileDirPath = fileDir.getPath();
-//        if (!fileDir.exists()) {
-//            System.out.println(fileDirPath);
-//            System.out.println("文件目录问题");
-//        }
-//        System.out.println(fileDirPath);
-//        List<String> list = new ArrayList<>();
-//        getFileName(fileDir, list);
-//        final List<String> collect = list.stream().map(t -> t.replace(fileDirPath, "")).collect(Collectors.toList());
-//        for (String s : collect) {
-//            registry.addViewController(s).setViewName(s.replace(".html",""));
-//        }
-//    }
+    @SneakyThrows
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        final File file = new File(dbPath + "/simple-file.db");
+        if (!file.exists()) {
+           //数据库文件不存在
+            File fileDir = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "simple-file.db");
+            try (InputStream is = Files.newInputStream(fileDir.toPath()); OutputStream os = Files.newOutputStream(file.toPath())) {
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = is.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+            }
+        }
+    }
 
     public void getFileName(File fileDir, List<String> fileNames) {
         File[] files = fileDir.listFiles();

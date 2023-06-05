@@ -45,7 +45,7 @@ public class User extends Model<User> {
     /**
      * 注册时间
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 角色集合
