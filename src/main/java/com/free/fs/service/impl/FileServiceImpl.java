@@ -3,6 +3,8 @@ package com.free.fs.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.free.fs.common.constant.CommonConstant;
 import com.free.fs.common.exception.BusinessException;
+import com.free.fs.mapper.TypeMapper;
+import com.free.fs.model.FileType;
 import com.free.fs.utils.FileUtil;
 import com.free.fs.utils.R;
 import com.free.fs.mapper.FileMapper;
@@ -42,6 +44,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     FileMapper fileMapper;
+
+    @Autowired
+    TypeMapper typeMapper;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -245,5 +250,14 @@ public class FileServiceImpl implements FileService {
     @Override
     public List<Dtree> getFileType(FilePojo pojo) {
         return null;
+    }
+
+    @Override
+    public FileType getTypeInfo(String type) {
+        log.info("查询存储为{}的信息",type);
+        final FileType fileType = typeMapper.selectOne(new LambdaQueryWrapper<FileType>()
+                .eq(FileType::getStorageType, type));
+        log.info("查询存储为{}的信息为{}",type,fileType);
+        return fileType;
     }
 }

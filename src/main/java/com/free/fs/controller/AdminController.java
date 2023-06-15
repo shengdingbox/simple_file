@@ -1,16 +1,12 @@
 package com.free.fs.controller;
 
-import com.free.fs.model.FilePojo;
+import com.free.fs.model.FileType;
 import com.free.fs.service.FileService;
-import com.free.fs.service.UserService;
-import com.zhouzifei.tool.dto.VirtualFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 /**
  * LoginController
@@ -31,8 +27,8 @@ public class AdminController extends BaseController {
      */
     @GetMapping("/add.html")
     public String add(String source, Model model) {
-        fileService.getTypeInfo(source);
-        model.addAttribute("list", list);
-        return "admin/list";
+        final FileType fileType = fileService.getTypeInfo(source);
+        model.addAttribute("fileType", fileType);
+        return "add";
     }
 }
