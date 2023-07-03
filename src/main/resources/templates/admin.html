@@ -27,7 +27,7 @@
   <!-- 顶部开始 -->
   <div class="container">
     <div class="logo">
-      <a href="./index.html">WeAdmin v1.6</a>
+      <a href="./index.html">SimpleFile v1.1</a>
     </div>
     <div class="left_open">
       <!-- <i title="展开左侧栏" class="iconfont">&#xe699;</i> -->
@@ -35,10 +35,10 @@
 
     </div>
     <ul class="layui-nav left fast-add" lay-filter="">
-      <li class="layui-nav-item">
-        <a href="javascript:;">+新增</a>
+      <!--<li class="layui-nav-item">
+        &lt;!&ndash;<a href="javascript:;">+新增</a>&ndash;&gt;
         <dl class="layui-nav-child">
-          <!-- 二级菜单 -->
+          &lt;!&ndash; 二级菜单 &ndash;&gt;
           <dd>
             <a onclick="WeAdminShow('资讯','https://www.baidu.com/')"><i class="layui-icon layui-icon-list"></i>资讯</a>
           </dd>
@@ -50,7 +50,7 @@
             <a onclick="WeAdminShow('用户','https://gitee.com/lovetime/WeAdmin')"><i class="layui-icon layui-icon-user"></i>用户</a>
           </dd>
         </dl>
-      </li>
+      </li>-->
     </ul>
     <ul class="layui-nav right" lay-filter="">
       <li class="layui-nav-item">
@@ -69,7 +69,7 @@
         </dl>
       </li>
       <li class="layui-nav-item to-index">
-        <a href="https://gitee.com/lovetime/WeAdmin" target="_blank">前台首页</a>
+        <a href="./" target="_blank">前台首页</a>
       </li>
     </ul>
 
@@ -100,7 +100,7 @@
   <!-- 中部结束 -->
   <!-- 底部开始 -->
   <div class="footer" id="footer" style="display: none;">
-    <div class="copyright">Copyright ©2018-2020 WeAdmin v1.6 All Rights Reserved</div>
+    <div class="copyright">Copyright ©2018-2023 SimpleFile v1.1 All Rights Reserved</div>
   </div>
   <!-- 底部结束 -->
   <script type="text/javascript">
@@ -144,7 +144,7 @@
 
         if (showFooter) {
           var currentY = new Date().getFullYear();
-          $('.copyright').html('Copyright ©2018-' + currentY + ' WeAdmin v1.6 All Rights Reserved');
+          $('.copyright').html('Copyright ©2018-' + currentY + ' SimpleFile v1.1 All Rights Reserved');
           $('#footer').show();
         } else {
           $('.left-nav, .page-content').css({ 'bottom': 0 });
