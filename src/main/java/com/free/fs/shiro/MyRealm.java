@@ -1,7 +1,7 @@
-package com.free.fs.common.shiro;
+package com.free.fs.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.free.fs.common.constant.CommonConstant;
+import com.free.fs.constant.CommonConstant;
 import com.free.fs.mapper.RoleAuthMapper;
 import com.free.fs.mapper.UserMapper;
 import com.free.fs.mapper.UserRoleMapper;

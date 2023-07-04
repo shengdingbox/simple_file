@@ -1,4 +1,4 @@
-package com.free.fs.common.exception;
+package com.free.fs.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;

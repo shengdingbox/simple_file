@@ -1,24 +1,24 @@
-package com.free.fs.common.exception;
+package com.free.fs.exception;
 
 /**
- * 业务异常
+ * 参数异常
  *
  * @author dinghao
  * @date 2021/3/10
  */
-public class BusinessException extends IException {
-    
-    private static final long serialVersionUID = 5450935008012318697L;
+public class ParameterException extends IException {
 
-    public BusinessException() {
+    private static final long serialVersionUID = 7993671808524980055L;
+
+    public ParameterException() {
         super();
     }
 
-    public BusinessException(String message) {
+    public ParameterException(String message) {
         super(message);
     }
 
-    public BusinessException(Integer code, String message) {
+    public ParameterException(Integer code, String message) {
         super(code, message);
     }
 
@@ -26,7 +26,7 @@ public class BusinessException extends IException {
     public Integer getCode() {
         Integer code = super.getCode();
         if (code == null) {
-            code = 500;
+            code = 400;
         }
         return code;
     }
@@ -35,7 +35,7 @@ public class BusinessException extends IException {
     public String getMessage() {
         String message = super.getMessage();
         if (message == null) {
-            message = "服务器错误";
+            message = "参数错误";
         }
         return message;
     }

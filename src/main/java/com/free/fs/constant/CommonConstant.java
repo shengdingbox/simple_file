@@ -1,4 +1,4 @@
-package com.free.fs.common.constant;
+package com.free.fs.constant;
 
 /**
  * 全局公共常量

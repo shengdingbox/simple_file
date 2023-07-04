@@ -37,7 +37,13 @@ layui.config({
         $.get('/file', {
             dirIds: dirIds,
             fileType: function () {
-                return $("#source").text();
+                var text = $("#source").text();
+                var val = $("#typeId").val();
+                var newVar = '' === text ? val : text;
+                console.log(text);
+                console.log(val);
+                console.log(newVar);
+                return newVar;
             }
         }, function (res) {
             layer.closeAll('loading');
@@ -171,6 +177,35 @@ layui.config({
         });
     }
 
+    // 刷新
+    $('#addSource').click(function () {
+        var domainUrl = $('#domainUrl').val();
+        var akUserName = $('#akUserName').val();
+        var skPassWord = $('#skPassWord').val();
+        var bucketName = $('#bucketName').val();
+        var token = $('#token').val();
+        var endpoint = $('#endpoint').val();
+        var region = $('#region').val();
+        var localFilePath = $('#localFilePath').val();
+        var source = $('#source').val();
+        alert(source);
+        $.post('/add', {
+            id: id,
+            domainUrl: domainUrl,
+            akUserName: akUserName,
+            skPassWord: skPassWord,
+            bucketName: bucketName,
+            token: token,
+            endpoint: endpoint,
+            region: region,
+            localFilePath: localFilePath,
+            source: source
+        }, function (res) {
+            console.log(res);
+            //renderList(res.data.dirIds);
+        });
+        window.close();
+    });
 
     $('#btnUploadSharding').click(function () {
         layer.open({

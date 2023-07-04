@@ -25,7 +25,7 @@
                 <span class="we-red">*</span>请求地址domainUrl
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="domainUrl" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="domainUrl" name="domainUrl"  autocomplete="off"
                        class="layui-input" th:value="${fileType.domainUrl}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -37,7 +37,7 @@
                 <span class="we-red">*</span>AK/用户名
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="akUserName" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="akUserName" name="akUserName"  autocomplete="off"
                        class="layui-input" th:value="${fileType.accessKey}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -49,7 +49,7 @@
                 <span class="we-red">*</span>SK/密码
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="skPassWord" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="skPassWord" name="skPassWord"  autocomplete="off"
                        class="layui-input" th:value="${fileType.secretKey}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -61,7 +61,7 @@
                 <span class="we-red">*</span>存储桶bucketName
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="bucketName" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="bucketName" name="bucketName"  autocomplete="off"
                        class="layui-input" th:value="${fileType.bucketName}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -73,7 +73,7 @@
                 <span class="we-red">*</span>存储token
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="token" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="token" name="token"  autocomplete="off"
                        class="layui-input" th:value="${fileType.token}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -85,7 +85,7 @@
                 <span class="we-red">*</span>存储地域endpoint
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="endpoint" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="endpoint" name="endpoint"  autocomplete="off"
                        class="layui-input" th:value="${fileType.endpoint}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -97,7 +97,7 @@
                 <span class="we-red">*</span>存储地区region
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="region" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="region" name="region"  autocomplete="off"
                        class="layui-input" th:value="${fileType.endpoint}">
             </div>
             <div class="layui-form-mid layui-word-aux">
@@ -109,19 +109,20 @@
                 <span class="we-red">*</span>存储本地路径
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="localFilePath" name="username" lay-verify="required|nikename" autocomplete="off"
+                <input type="text" id="localFilePath" name="localFilePath"  autocomplete="off"
                        class="layui-input" th:value="${fileType.localFilePath}">
             </div>
             <div class="layui-form-mid layui-word-aux">
                 请设置存储本地路径
             </div>
         </div>
+        <input type="hidden" id="source" name="source" class="layui-input" th:value="${fileType.storageType}">
         <div class="layui-form-item">
-            <button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
+            <button class="layui-btn" id="addSource" lay-filter="add" lay-submit="" onclick="event.preventDefault();">确定</button>
         </div>
     </form>
 </div>
-<script src="../../lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:src="@{/assets/modules/layui/layui.js}"></script>
 
 <script>
     layui.extend({
@@ -135,19 +136,19 @@
             layer = layui.layer;
 
         //自定义验证规则
-        form.verify({
-            nikename: function (value) {
-                if (value.length < 5) {
-                    return '昵称至少得5个字符啊';
-                }
-            },
-            pass: [/(.+){6,12}$/, '密码必须6到12位'],
-            repass: function (value) {
-                if ($('#L_pass').val() != $('#L_repass').val()) {
-                    return '两次密码不一致';
-                }
-            }
-        });
+        // form.verify({
+        //     nikename: function (value) {
+        //         if (value.length < 5) {
+        //             return '昵称至少得5个字符啊';
+        //         }
+        //     },
+        //     pass: [/(.+){6,12}$/, '密码必须6到12位'],
+        //     repass: function (value) {
+        //         if ($('#L_pass').val() != $('#L_repass').val()) {
+        //             return '两次密码不一致';
+        //         }
+        //     }
+        // });
         //失去焦点时判断值为空不验证，一旦填写必须验证
         $('input[name="email"]').blur(function () {
             //这里是失去焦点时的事件
@@ -170,43 +171,18 @@
             layer.alert("增加成功", {
                 icon: 6
             }, function () {
-                //获取提交成功的时间
-                var time = new Date();
-                var timeNow = util.toDateString(time);
                 // 获得frame索引
                 var index = parent.layer.getFrameIndex(window.name);
-
-                var _len = parent.$('#memberList tr').length;
-                alert(_len);
-                parent.$('#memberList').append(
-                    '<tr data-id="' + _len + '">' +
-                    '<td>' +
-                    '<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id="' + _len + '"><i class="layui-icon">&#xe605;</i></div>' +
-                    '</td>' +
-                    '<td>' + _len + '</td>' +
-                    '<td>' + f.username + '</td>' +
-                    '<td>' + f.sex + '</td>' +
-                    '<td>' + f.phone + '</td>' +
-                    '<td>' + f.email + '</td>' +
-                    '<td>北京市西城区</td>' +
-                    '<td>' + timeNow + '</td>' +
-                    '<td class="td-status"><span class="layui-btn layui-btn-normal layui-btn-xs">已启用</span></td>' +
-                    '<td class="td-manage">' +
-                    '<a onclick="member_stop(this,\'10001\')" href="javascript:;" title="启用"><i class="layui-icon">&#xe601;</i></a>' +
-                    '<a title="编辑" onclick="WeAdminShow(\'编辑\',\'./edit.html\',600,400)" href="javascript:;"><i class="layui-icon">&#xe642;</i></a>' +
-                    '<a onclick="WeAdminShow(\'修改密码\',\'./password.html\',600,400)" title="修改密码" href="javascript:;"><i class="layui-icon">&#xe631;</i></a>' +
-                    '<a title="删除" onclick="member_del(this,\'要删除的id\')" href="javascript:;"><i class="layui-icon">&#xe640;</i></a>' +
-                    '</td>' +
-                    '</tr>'
-                );
                 //关闭当前frame
                 parent.layer.close(index);
+                $('#btnRefresh').click();
             });
             return false;
         });
 
     });
 </script>
+<script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
 </body>
 
 </html>

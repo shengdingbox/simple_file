@@ -1,4 +1,4 @@
-package com.free.fs.common.exception;
+package com.free.fs.exception;
 
 /**
  * 自定义异常基类

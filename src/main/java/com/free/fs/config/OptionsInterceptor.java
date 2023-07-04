@@ -1,4 +1,4 @@
-package com.free.fs.common.config;
+package com.free.fs.config;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 

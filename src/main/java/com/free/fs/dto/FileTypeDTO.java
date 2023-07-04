@@ -1,6 +1,5 @@
-package com.free.fs.model;
+package com.free.fs.dto;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.Data;
@@ -15,13 +14,16 @@ import lombok.EqualsAndHashCode;
 @Data
 @TableName("file_type")
 @EqualsAndHashCode(callSuper = true)
-public class FileType extends Model<FileType> {
+public class FileTypeDTO extends Model<FileTypeDTO> {
 
-    /**
-     * 自增id
-     */
-    @TableId
     private Long id;
     private String storageType;
-    private String config;
+    private String domainUrl;
+    private String accessKey;
+    private String secretKey;
+    private String endpoint;
+    private String bucketName;
+    private String token;
+    private String region;
+    private String localFilePath;
 }

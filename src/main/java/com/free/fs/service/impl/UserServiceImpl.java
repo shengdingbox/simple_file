@@ -1,11 +1,10 @@
 package com.free.fs.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.free.fs.common.constant.CommonConstant;
-import com.free.fs.common.exception.BusinessException;
-import com.free.fs.common.shiro.EndecryptUtil;
+import com.free.fs.constant.CommonConstant;
+import com.free.fs.exception.BusinessException;
+import com.free.fs.shiro.EndecryptUtil;
 import com.free.fs.dto.MenuDTO;
 import com.free.fs.mapper.MenuMapper;
 import com.free.fs.mapper.RoleMapper;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

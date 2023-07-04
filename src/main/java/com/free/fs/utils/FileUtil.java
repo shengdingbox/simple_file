@@ -1,7 +1,7 @@
 package com.free.fs.utils;
 
-import com.free.fs.common.constant.CommonConstant;
-import com.free.fs.common.exception.BusinessException;
+import com.free.fs.constant.CommonConstant;
+import com.free.fs.exception.BusinessException;
 import com.free.fs.model.FilePojo;
 import org.springframework.web.multipart.MultipartFile;
 import sun.net.www.protocol.http.HttpURLConnection;

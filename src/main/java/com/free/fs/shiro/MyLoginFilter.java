@@ -1,6 +1,6 @@
-package com.free.fs.common.shiro;
+package com.free.fs.shiro;
 
-import com.free.fs.common.constant.CommonConstant;
+import com.free.fs.constant.CommonConstant;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
 
