@@ -113,4 +113,6 @@ public interface FileService{
 
     List<Dtree> getFileType(FilePojo pojo);
     FileType getTypeInfo(String type);
+
+    void saveType(FileType fileType);
 }

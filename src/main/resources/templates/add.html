@@ -19,106 +19,24 @@
 
 <body>
 <div class="weadmin-body">
-    <form class="layui-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>请求地址domainUrl
+    <form class="layui-form" id="allFile">
+        <div class="layui-form-item" th:each="map,mapStat:${fileType}">
+            <label class="layui-form-label" th:text="${map.key}">
+                <span class="we-red">*</span>
             </label>
             <div class="layui-input-inline">
-                <input type="text" id="domainUrl" name="domainUrl"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.domainUrl}">
+                <input type="text" th:id="${map.key}" th:name="${map.key}" autocomplete="off"
+                       class="layui-input" th:value="${map.value}">
             </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置请求地址
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>AK/用户名
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="akUserName" name="akUserName"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.accessKey}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置AK密钥或者用户名
+            <div class="layui-form-mid layui-word-aux" th:text="${map.key}">
+
             </div>
         </div>
+        <input type="hidden" id="source" name="source" class="layui-input" th:value="${storageType}">
         <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>SK/密码
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="skPassWord" name="skPassWord"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.secretKey}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置SK密钥或者密码
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>存储桶bucketName
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="bucketName" name="bucketName"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.bucketName}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置存储桶
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>存储token
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="token" name="token"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.token}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置存储token
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>存储地域endpoint
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="endpoint" name="endpoint"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.endpoint}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置存储地域
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>存储地区region
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="region" name="region"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.endpoint}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置存储地区
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">
-                <span class="we-red">*</span>存储本地路径
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="localFilePath" name="localFilePath"  autocomplete="off"
-                       class="layui-input" th:value="${fileType.localFilePath}">
-            </div>
-            <div class="layui-form-mid layui-word-aux">
-                请设置存储本地路径
-            </div>
-        </div>
-        <input type="hidden" id="source" name="source" class="layui-input" th:value="${fileType.storageType}">
-        <div class="layui-form-item">
-            <button class="layui-btn" id="addSource" lay-filter="add" lay-submit="" onclick="event.preventDefault();">确定</button>
+            <button class="layui-btn" id="addSource" lay-filter="add" lay-submit="" onclick="event.preventDefault();">
+                确定
+            </button>
         </div>
     </form>
 </div>

@@ -260,4 +260,9 @@ public class FileServiceImpl implements FileService {
         log.info("查询存储为{}的信息为{}",type,fileType);
         return fileType;
     }
+
+    @Override
+    public void saveType(FileType fileType) {
+        typeMapper.updateById(fileType);
+    }
 }

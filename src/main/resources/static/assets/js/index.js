@@ -179,33 +179,59 @@ layui.config({
 
     // 刷新
     $('#addSource').click(function () {
-        var domainUrl = $('#domainUrl').val();
-        var akUserName = $('#akUserName').val();
-        var skPassWord = $('#skPassWord').val();
-        var bucketName = $('#bucketName').val();
-        var token = $('#token').val();
-        var endpoint = $('#endpoint').val();
-        var region = $('#region').val();
-        var localFilePath = $('#localFilePath').val();
-        var source = $('#source').val();
-        alert(source);
-        $.post('/add', {
-            id: id,
-            domainUrl: domainUrl,
-            akUserName: akUserName,
-            skPassWord: skPassWord,
-            bucketName: bucketName,
-            token: token,
-            endpoint: endpoint,
-            region: region,
-            localFilePath: localFilePath,
-            source: source
-        }, function (res) {
-            console.log(res);
-            //renderList(res.data.dirIds);
-        });
-        window.close();
-    });
+            var domainUrl = $('#domainUrl').val();
+            var akUserName = $('#akUserName').val();
+            var skPassWord = $('#skPassWord').val();
+            var bucketName = $('#bucketName').val();
+            var repository = $('#repository').val();
+            var token = $('#token').val();
+            var endpoint = $('#endpoint').val();
+            var region = $('#region').val();
+            var localFilePath = $('#localFilePath').val();
+            var source = $('#source').val();
+            console.log(source);
+            var form = document.getElementById("allFile");
+            var tagElements = form.getElementsByTagName('input');
+            var obj = {
+                    /*id = id,
+                    domainUrl = domainUrl,
+                    akUserName = akUserName,
+                    skPassWord = skPassWord,
+                    bucketName = bucketName,
+                    repository = repository,
+                    token = token,
+                    endpoint = endpoint,
+                    region = region,
+                    localFilePath = localFilePath,
+                    source = source*/
+                }
+            ;
+            for (var j = 0; j < tagElements.length; j++) {
+                var tagElement = tagElements[j];
+                var value1 = tagElement.value;
+                var name1 = tagElement.name;
+                console.log(value1);
+                console.log(name1);
+                obj[name1] = value1;
+            }
+            alert(obj);
+            console.log(JSON.stringify(obj))
+            $.ajax({
+                url: '/add',
+                method: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify(obj),
+                success:
+                    function (res) {
+                        console.log(res);
+                        //renderList(res.data.dirIds);
+                    }
+            });
+            window.close();
+        }
+    )
+    ;
 
     $('#btnUploadSharding').click(function () {
         layer.open({
@@ -330,7 +356,10 @@ layui.config({
                         }
                     },
                     toolbarExt: [{
-                        toolbarId: "moveNode", icon: "dtree-icon-move-down", title: "移动", handler: function (node) {
+                        toolbarId: "moveNode",
+                        icon: "dtree-icon-move-down",
+                        title: "移动",
+                        handler: function (node) {
                             var param = dtree.getChildParam(DTree, node.nodeId);
                             var ids = [];
                             var nodeMoveids = [];
@@ -352,7 +381,10 @@ layui.config({
                             openEditName(node.context, node.nodeId, node.recordData.isDir);
                         }
                     }, {
-                        toolbarId: "delNode", icon: "dtree-icon-roundclose", title: "删除", handler: function (node) {
+                        toolbarId: "delNode",
+                        icon: "dtree-icon-roundclose",
+                        title: "删除",
+                        handler: function (node) {
                             var index = layer.confirm('上级文件夹删除会把所有子文件也一起删除，你可要想好？', {
                                 btn: ['想好了', '再想想']
                             }, function () {
@@ -717,4 +749,5 @@ layui.config({
         fileType = opt;
         console.log(opt)
     });
-});
+})
+;
