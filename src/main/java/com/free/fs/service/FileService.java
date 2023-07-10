@@ -27,23 +27,6 @@ public interface FileService{
      * @return
      */
     public List<VirtualFile> getList(FilePojo pojo, String fileType);
-
-    /**
-     * 获取文件树结构列表
-     *
-     * @param pojo
-     * @return
-     */
-    List<Dtree> getTreeList(FilePojo pojo);
-
-    /**
-     * 获取目录树结构列表
-     *
-     * @param pojo
-     * @return
-     */
-    List<Dtree> getDirTreeList(FilePojo pojo);
-
     /**
      * 上传文件
      *

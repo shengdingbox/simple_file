@@ -4,12 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Free-FS文件服务器</title>
-    <link rel="icon" type="shortcut icon" th:href="@{/assets/img/favicon.ico}"/>
-    <link rel="stylesheet" th:href="@{/assets/modules/layui/css/layui.css}">
-    <link rel="stylesheet" th:href="@{/assets/modules/dtree/dtree.css}">
-    <link rel="stylesheet" th:href="@{/assets/modules/dtree/font/dtreefont.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/filelist.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/input.css}">
+    <link rel="icon" type="shortcut icon" th:href="@{/img/favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/modules/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/modules/dtree/dtree.css}">
+    <link rel="stylesheet" th:href="@{/modules/dtree/font/dtreefont.css}">
+    <link rel="stylesheet" th:href="@{/css/filelist.css}">
+    <link rel="stylesheet" th:href="@{/css/input.css}">
 </head>
 <body>
 <div class="layui-container" style="padding-top: 15px;">
@@ -194,7 +194,7 @@
             {{# if(item.suffix=="jpg"||item.suffix=="png"){ }}
             <img src="{{item.fullFilePath}}"/>
             {{# }else{ }}
-            <img src="assets/img/fti/{{item.suffix}}.png"/>
+            <img src="img/fti/{{item.suffix}}.png"/>
             {{# } }}
         </div>
         <div class="file-list-name">
@@ -214,10 +214,10 @@
     {{# } }}
 </script>
 
-<script type="text/javascript" th:src="@{/assets/modules/layui/layui.js}"></script>
-<script type="text/javascript" th:src="@{/assets/modules/clipboard.min.js}"></script>
-<script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
-<script type="text/javascript" th:src="@{/assets/js/eleDel.js}" charset="utf-8"></script>
+<script type="text/javascript" th:src="@{/modules/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/modules/clipboard.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
+<script type="text/javascript" th:src="@{/js/eleDel.js}" charset="utf-8"></script>
 
 </body>
 </html>

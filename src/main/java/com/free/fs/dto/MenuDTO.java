@@ -27,15 +27,17 @@ public class MenuDTO {
      * 菜单地址
      */
     private String url;
-    /**、
+    /**
+     * 、
      * 父级id
      */
     private List<MenuDTO> children;
 
 
-    public static MenuDTO  of(Menu menu) {
+    public static MenuDTO of(Menu menu) {
         MenuDTO dto = new MenuDTO();
         BeanUtils.copyProperties(menu, dto);
+        dto.setUrl("./filelist.html?source=" + menu.getSource());
         return dto;
     }
 }

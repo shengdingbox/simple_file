@@ -2,15 +2,15 @@ package com.free.fs.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.free.fs.controller.request.FileTypeRequest;
-import com.free.fs.dto.FileTypeDTO;
+import com.free.fs.dto.MenuDTO;
 import com.free.fs.model.FileType;
 import com.free.fs.service.FileService;
+import com.free.fs.service.UserService;
 import com.free.fs.utils.R;
 import com.zhouzifei.tool.common.ServiceException;
 import com.zhouzifei.tool.config.SimpleFsProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,13 +35,25 @@ public class AdminController extends BaseController {
     private final FileService fileService;
 
     @Autowired
-    SimpleFsProperties simpleFsProperties;
+    private SimpleFsProperties simpleFsProperties;
 
-    @GetMapping("/admin.html")
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/")
     public String admin() {
-        return "admin";
+        return "index";
     }
-
+    @GetMapping("/filelist.html")
+    public String filelisthtml(String source,Model model) {
+        model.addAttribute("source", source);
+        return "filelist.html";
+    }
+    @GetMapping("/welcome.html")
+    public String welcome(String source,Model model) {
+        model.addAttribute("source", source);
+        return "welcome";
+    }
     /**
      * 注册页
      */
@@ -109,5 +120,14 @@ public class AdminController extends BaseController {
             e.printStackTrace();
         }
         return R.succeed("注册成功");
+    }
+    /**
+     * 注册
+     */
+    @PostMapping("/admin/user/menu")
+    @ResponseBody
+    public R menu(String username) {
+        List<MenuDTO> jsonObject = userService.getMenu();
+        return R.of(jsonObject, 1, "ok");
     }
 }

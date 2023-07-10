@@ -8,8 +8,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" th:href="@{/assets/css/font.css}">
-    <link rel="stylesheet" th:href="@{/assets/css/weadmin.css}">
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/weadmin.css}">
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
@@ -40,11 +40,11 @@
         </div>
     </form>
 </div>
-<script type="text/javascript" th:src="@{/assets/modules/layui/layui.js}"></script>
+<script type="text/javascript" th:src="@{/modules/layui/layui.js}"></script>
 
 <script>
     layui.extend({
-        admin: '{/}../../static/js/admin'
+        admin: '{/}../js/admin'
     });
     layui.use(['form', 'jquery', 'util', 'admin', 'layer'], function () {
         var form = layui.form,
@@ -100,7 +100,7 @@
 
     });
 </script>
-<script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 
 </html>

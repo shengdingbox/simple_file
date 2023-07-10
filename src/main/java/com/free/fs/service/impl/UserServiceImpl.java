@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.free.fs.constant.CommonConstant;
 import com.free.fs.exception.BusinessException;
-import com.free.fs.shiro.EndecryptUtil;
 import com.free.fs.dto.MenuDTO;
 import com.free.fs.mapper.MenuMapper;
 import com.free.fs.mapper.RoleMapper;
@@ -17,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.rmi.MarshalException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,21 +37,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     private final MenuMapper menuMapper;
 
-    @Override
-    public boolean addUser(User user) {
-        user.setPassword(EndecryptUtil.encrytMd5(user.getPassword(), CommonConstant.DEFAULT_SALT, CommonConstant.DEFAULT_HASH_COUNT));
-        if (baseMapper.insert(user) <= 0) {
-            throw new BusinessException("用户新增失败");
-        }
-        //给用户设置基本角色
-        UserRole ur = new UserRole();
-        ur.setUserId(user.getId());
-        ur.setRoleId(roleMapper.selectOne(new LambdaQueryWrapper<Role>().eq(Role::getRoleCode, CommonConstant.ROLE_USER)).getId());
-        if (userRoleMapper.insert(ur) <= 0) {
-            throw new BusinessException("用户新增失败");
-        }
-        return true;
-    }
 
     @Override
     public List<MenuDTO>  getMenu() {

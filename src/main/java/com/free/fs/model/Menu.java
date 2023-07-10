@@ -29,7 +29,11 @@ public class Menu extends Model<Menu> {
     /**
      * 菜单地址
      */
-    private String url;
+    private String source;
+    /**
+     * 菜单地址
+     */
+    private String config;
     /**、
      * 父级id
      */

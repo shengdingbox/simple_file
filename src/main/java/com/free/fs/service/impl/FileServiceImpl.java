@@ -61,51 +61,6 @@ public class FileServiceImpl implements FileService {
         return apiClient.fileList(fileListRequesr);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Dtree> getTreeList(FilePojo pojo) {
-        List<FilePojo> filePojos = fileMapper.selectList(
-                new LambdaQueryWrapper<FilePojo>()
-                        .eq(pojo.getIsDir()!=null && pojo.getIsDir(), FilePojo::getIsDir, pojo.getIsDir())
-                        .orderByDesc(FilePojo::getIsDir, FilePojo::getPutTime)
-        );
-        List<Dtree> dtrees = new ArrayList<>();
-        filePojos.forEach(item -> {
-            Dtree dtree = new Dtree();
-            BeanUtils.copyProperties(item,dtree);
-            dtree.setTitle(item.getName());
-            //设置图标
-            if (dtree.getIsDir()) {
-                dtree.setIconClass(CommonConstant.DTREE_ICON_1);
-            } else {
-                dtree.setIconClass(CommonConstant.DTREE_ICON_2);
-            }
-            dtrees.add(dtree);
-        });
-        return null;
-    }
-
-    @Override
-    public List<Dtree> getDirTreeList(FilePojo pojo) {
-        pojo.setIsDir(Boolean.TRUE);
-        return this.getTreeList(pojo);
-    }
-
-    /**
-     * 递归查询子节点
-     *
-     * @param root 根节点
-     * @param all  所有节点
-     * @return 根节点信息
-     */
-
-    private List<Dtree> getChildrens(Dtree root, List<Dtree> all) {
-        return all.stream()
-                .filter(m -> Objects.equals(m.getParentId(), root.getId()))
-                .peek((m) -> m.setChildren(getChildrens(m, all)))
-                .collect(Collectors.toList());
-    }
-
     @Override
     public R upload(MultipartFile[] files, String dirIds, String fileType) {
         if (files == null || files.length == 0) {

@@ -14,13 +14,5 @@ import java.util.List;
  */
 public interface UserService{
 
-    /**
-     * 新增用户
-     *
-     * @param user
-     * @return
-     */
-    boolean addUser(User user);
-
     List<MenuDTO> getMenu();
 }
