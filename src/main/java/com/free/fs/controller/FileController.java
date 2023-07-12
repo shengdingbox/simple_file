@@ -1,14 +1,13 @@
 package com.free.fs.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.free.fs.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
 import com.free.fs.service.FileService;
+import com.free.fs.utils.R;
 import com.zhouzifei.tool.dto.VirtualFile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 文件管理
@@ -122,7 +122,6 @@ public class FileController{
      * @param url
      * @param response
      */
-    @RequiresPermissions("file:download")
     @GetMapping("/downLoad")
     public void downLoad(String url, HttpServletResponse response) {
         fileService.download(url, response);
@@ -161,7 +160,6 @@ public class FileController{
      *
      * @param url
      */
-    @RequiresPermissions("file:delete")
     @PostMapping("/deleteFile")
     public R deleteFile(String url) {
         if (fileService.delete(url)) {
@@ -176,7 +174,6 @@ public class FileController{
      *
      * @param id
      */
-    @RequiresPermissions("file:delete")
     @PostMapping("/deleteByIds")
     public R deleteByIds(Long id) {
 //        if (fileService.deleteByIds(id)) {
@@ -191,7 +188,6 @@ public class FileController{
      *
      * @param pojo
      */
-    @RequiresPermissions("dir:add")
     @PostMapping("/addFolder")
     public R addFolder(FilePojo pojo) {
         if (fileService.addFolder(pojo)) {

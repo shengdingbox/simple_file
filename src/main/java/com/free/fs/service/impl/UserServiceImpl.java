@@ -1,5 +1,6 @@
 package com.free.fs.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.free.fs.constant.CommonConstant;
@@ -11,11 +12,15 @@ import com.free.fs.mapper.UserMapper;
 import com.free.fs.mapper.UserRoleMapper;
 import com.free.fs.model.*;
 import com.free.fs.service.UserService;
+import com.free.fs.utils.R;
+import com.zhouzifei.tool.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.rmi.MarshalException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,25 +35,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
-
-    private final UserRoleMapper userRoleMapper;
-
-    private final RoleMapper roleMapper;
-
-    private final MenuMapper menuMapper;
-
-
     @Override
-    public List<MenuDTO>  getMenu() {
-        List<Menu> menus = menuMapper.selectList(new LambdaQueryWrapper<Menu>());
-        List<MenuDTO> roots = menus.stream().filter(e -> {
-            log.info("{}", e);
-            return StringUtils.equals(e.getParentId(), "0");
-        }).map(MenuDTO::of).collect(Collectors.toList());
-        for (MenuDTO menuDTO : roots) {
-            setChildren(menuDTO, menus);
+    public List<MenuDTO> getMenu() {
+        List<Menu> menus;
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("json/menu.json")) {
+            final String parseInputStream = FileUtil.parseInputStream(inputStream);
+            menus = JSONObject.parseArray(parseInputStream, Menu.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return roots;
+        final List<MenuDTO> collect = menus.stream().map(MenuDTO::of).collect(Collectors.toList());
+        return collect;
     }
 
     private static void setChildren(MenuDTO regionDTO, List<Menu> regionList) {

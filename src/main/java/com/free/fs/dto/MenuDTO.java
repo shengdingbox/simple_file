@@ -37,7 +37,7 @@ public class MenuDTO {
     public static MenuDTO of(Menu menu) {
         MenuDTO dto = new MenuDTO();
         BeanUtils.copyProperties(menu, dto);
-        dto.setUrl("./filelist.html?source=" + menu.getSource());
+        dto.setUrl("./list.html?source=" + menu.getSource());
         return dto;
     }
 }

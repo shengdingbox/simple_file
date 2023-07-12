@@ -4,14 +4,18 @@ import com.alibaba.fastjson.JSONObject;
 import com.free.fs.controller.request.FileTypeRequest;
 import com.free.fs.dto.MenuDTO;
 import com.free.fs.model.FileType;
+import com.free.fs.model.Menu;
 import com.free.fs.service.FileService;
 import com.free.fs.service.UserService;
 import com.free.fs.utils.R;
 import com.zhouzifei.tool.common.ServiceException;
 import com.zhouzifei.tool.config.SimpleFsProperties;
+import com.zhouzifei.tool.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +23,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +37,7 @@ import java.util.Map;
  */
 @Controller
 @RequiredArgsConstructor
-public class AdminController extends BaseController {
+public class AdminController{
 
     @Autowired
     private final FileService fileService;
@@ -39,15 +47,14 @@ public class AdminController extends BaseController {
 
     @Autowired
     private UserService userService;
-
     @GetMapping("/")
     public String admin() {
         return "index";
     }
-    @GetMapping("/filelist.html")
-    public String filelisthtml(String source,Model model) {
+    @GetMapping("/list.html")
+    public String list(String source,Model model) {
         model.addAttribute("source", source);
-        return "filelist.html";
+        return "list";
     }
     @GetMapping("/welcome.html")
     public String welcome(String source,Model model) {
@@ -60,11 +67,11 @@ public class AdminController extends BaseController {
     @GetMapping("/add.html")
     public String add(Model model, FileTypeRequest fileTypeRequest) {
         final String source = fileTypeRequest.getSource();
-        final FileType fileType = fileService.getTypeInfo(source);
-        if (null == fileType) {
+        final Menu menu = fileService.getTypeInfo(source);
+        if (null == menu) {
             return "add";
         }
-        final String config = fileType.getConfig();
+        final String config = menu.getConfig();
         final Class<? extends SimpleFsProperties> aClass = simpleFsProperties.getClass();
         Map<String, String> names = new HashMap<>();
         try {
@@ -76,7 +83,6 @@ public class AdminController extends BaseController {
                 jsonObject = new JSONObject();
             }
             final Field[] declaredFields = type.getDeclaredFields();
-
             for (Field field : declaredFields) {
                 field.setAccessible(true);
                 final String name = field.getName();
@@ -87,7 +93,7 @@ public class AdminController extends BaseController {
             e.printStackTrace();
         }
         model.addAttribute("fileType", names);
-        model.addAttribute("storageType", fileType.getStorageType());
+        model.addAttribute("storageType", menu.getSource());
         return "add";
     }
 
@@ -102,15 +108,15 @@ public class AdminController extends BaseController {
             throw new ServiceException("请选择存储类型");
         }
         final String source = jsonObject.getString("source");
-        final FileType fileType = fileService.getTypeInfo(source);
-        fileType.setConfig(str);
-        fileService.saveType(fileType);
+        final Menu menu = fileService.getTypeInfo(source);
+        menu.setConfig(str);
+        fileService.saveType(menu);
         try {
             final Class<? extends SimpleFsProperties> aClass = simpleFsProperties.getClass();
             final Field declaredField = aClass.getDeclaredField(source);
             declaredField.setAccessible(true);
             final Class<?> type = declaredField.getType();
-            String config = fileType.getConfig();
+            String config = menu.getConfig();
             if (StringUtils.isEmpty(config)) {
                 config = "{}";
             }

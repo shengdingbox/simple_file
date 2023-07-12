@@ -1,6 +1,6 @@
 package com.free.fs.service;
 
-import com.free.fs.model.FileType;
+import com.free.fs.model.Menu;
 import com.free.fs.utils.R;
 import com.free.fs.model.Dtree;
 import com.free.fs.model.FilePojo;
@@ -95,7 +95,7 @@ public interface FileService{
     Map<String, Object> getDirs(Long id);
 
     List<Dtree> getFileType(FilePojo pojo);
-    FileType getTypeInfo(String type);
+    Menu getTypeInfo(String type);
 
-    void saveType(FileType fileType);
+    void saveType(Menu menu);
 }

@@ -1,10 +1,11 @@
 package com.free.fs.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.free.fs.constant.CommonConstant;
 import com.free.fs.exception.BusinessException;
 import com.free.fs.mapper.TypeMapper;
-import com.free.fs.model.FileType;
+import com.free.fs.model.Menu;
 import com.free.fs.utils.FileUtil;
 import com.free.fs.utils.R;
 import com.free.fs.mapper.FileMapper;
@@ -18,14 +19,18 @@ import com.zhouzifei.tool.service.ApiClient;
 import com.zhouzifei.tool.service.FileUploader;
 import com.zhouzifei.tool.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,10 +56,7 @@ public class FileServiceImpl implements FileService {
     @SuppressWarnings("unchecked")
     @Override
     public List<VirtualFile> getList(FilePojo pojo, String fileType) {
-        final FileUploader fileUploader = FileUploader.builder()
-                .simpleFsProperties(simpleFsProperties)
-                .storageType(fileType)
-                .build();
+        final FileUploader fileUploader = FileUploader.builder().simpleFsProperties(simpleFsProperties).storageType(fileType).build();
         final ApiClient apiClient = fileUploader.execute();
         final FileListRequesr fileListRequesr = new FileListRequesr();
         fileListRequesr.setFold(pojo.getDirIds());
@@ -82,10 +84,7 @@ public class FileServiceImpl implements FileService {
      * @param fileType
      */
     protected FilePojo uploadFile(MultipartFile file, String fileType) {
-        final FileUploader fileUploader = FileUploader.builder()
-                .simpleFsProperties(simpleFsProperties)
-                .storageType(fileType)
-                .build();
+        final FileUploader fileUploader = FileUploader.builder().simpleFsProperties(simpleFsProperties).storageType(fileType).build();
         final ApiClient apiClient = fileUploader.execute();
         final VirtualFile virtualFile = apiClient.uploadFile(file);
         log.debug(virtualFile.toString());
@@ -149,7 +148,7 @@ public class FileServiceImpl implements FileService {
         if (0 > 0) {
             throw new BusinessException("当前目录名称已存在，请修改后重试！");
         }
-        return fileMapper.insert(pojo) > 0;
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -158,20 +157,20 @@ public class FileServiceImpl implements FileService {
         if (pojo.getName().equals(pojo.getRename())) {
             throw new BusinessException("当前名称与原始名称相同，请修改后重试！");
         }
-        FilePojo p = fileMapper.selectById(pojo.getId());
-        Integer count = fileMapper.selectCount(
-                new LambdaQueryWrapper<FilePojo>()
-                        .eq(FilePojo::getName, pojo.getRename())
-                        .eq(FilePojo::getIsDir,p.getIsDir())
-                        .eq(FilePojo::getParentId,p.getParentId())
-        );
-        if (count > 0) {
-            throw new BusinessException("当前目录已存在该名称,请修改后重试！");
-        }
-        FilePojo updPojo = new FilePojo();
-        updPojo.setId(pojo.getId());
-        updPojo.setName(pojo.getRename());
-        return fileMapper.updateById(updPojo) > 0;
+//        FilePojo p = fileMapper.selectById(pojo.getId());
+//        Integer count = fileMapper.selectCount(
+//                new LambdaQueryWrapper<FilePojo>()
+//                        .eq(FilePojo::getName, pojo.getRename())
+//                        .eq(FilePojo::getIsDir,p.getIsDir())
+//                        .eq(FilePojo::getParentId,p.getParentId())
+//        );
+//        if (count > 0) {
+//            throw new BusinessException("当前目录已存在该名称,请修改后重试！");
+//        }
+//        FilePojo updPojo = new FilePojo();
+//        updPojo.setId(pojo.getId());
+//        updPojo.setName(pojo.getRename());
+        return true;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -186,9 +185,9 @@ public class FileServiceImpl implements FileService {
             updatePojo = new FilePojo();
             updatePojo.setId(Long.parseLong(id));
             updatePojo.setParentId(parentId);
-            if (fileMapper.updateById(updatePojo) <= 0) {
-                throw new BusinessException("移动失败");
-            }
+//            if (fileMapper.updateById(updatePojo) <= 0) {
+//                throw new BusinessException("移动失败");
+//            }
         }
         return true;
     }
@@ -208,16 +207,38 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public FileType getTypeInfo(String type) {
-        log.info("查询存储为{}的信息",type);
-        final FileType fileType = typeMapper.selectOne(new LambdaQueryWrapper<FileType>()
-                .eq(FileType::getStorageType, type));
-        log.info("查询存储为{}的信息为{}",type,fileType);
-        return fileType;
+    public Menu getTypeInfo(String type) {
+        log.info("查询存储为{}的信息", type);
+        List<Menu> menus;
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("json/menu.json")) {
+            final String parseInputStream = com.zhouzifei.tool.util.FileUtil.parseInputStream(inputStream);
+            menus = JSONObject.parseArray(parseInputStream, Menu.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        final Map<String, Menu> collect = menus.stream().collect(Collectors.toMap(Menu::getSource, menu -> menu));
+        final Menu menu = collect.get(type);
+        log.info("查询存储为{}的信息为{}", type, menu);
+        return menu;
     }
 
     @Override
-    public void saveType(FileType fileType) {
-        typeMapper.updateById(fileType);
+    public void saveType(Menu newMenu) {
+        try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("json/menu.json")) {
+            final String parseInputStream = com.zhouzifei.tool.util.FileUtil.parseInputStream(inputStream);
+            List<Menu> menus = JSONObject.parseArray(parseInputStream, Menu.class);
+            final Map<String, Menu> collect = menus.stream().collect(Collectors.toMap(Menu::getSource, menu1 -> menu1));
+            final Menu menu = collect.get(newMenu.getSource());
+            menu.setConfig(newMenu.getConfig());
+            collect.put(newMenu.getSource(), newMenu);
+            final Collection<Menu> values = collect.values();
+            List<Menu> list = new ArrayList<>(Arrays.asList(values.toArray(new Menu[0])));
+            final String jsonString = JSONArray.toJSONString(list);
+            File file = ResourceUtils.getFile("classpath:xiaozi.txt");
+            com.zhouzifei.tool.util.FileUtil.writeByteArrayToFile(file, jsonString.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

@@ -1,15 +1,14 @@
 <!doctype html>
-<html lang="en">
-
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>后台管理-WeAdmin Frame型后台管理系统-WeAdmin 1.0</title>
+  <title>后台管理-SIMPLE-FS文件服务器</title>
   <meta name="renderer" content="webkit|ie-comp|ie-stand">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+  <meta http-equiv="content-type" content="no-siteapp" />
+  <link rel="shortcut icon" th:href="@{/img/favicon.ico}" type="image/x-icon" />
   <link rel="stylesheet" th:href="@{/css/font.css}">
   <link rel="stylesheet" th:href="@{/css/weadmin.css}">
 
@@ -19,10 +18,7 @@
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-
 </head>
-
 <body>
   <!-- 顶部开始 -->
   <div class="container">
@@ -30,7 +26,7 @@
       <a href="./index.html">SimpleFile v1.1</a>
     </div>
     <div class="left_open">
-      <!-- <i title="展开左侧栏" class="iconfont">&#xe699;</i> -->
+       <i title="展开左侧栏" class="iconfont">&#xe699;</i>
       <i title="展开左侧栏" class="layui-icon layui-icon-shrink-right"></i>
 
     </div>
@@ -116,17 +112,6 @@
         http.getMenu();
         index.tab.tabInit();
         // menu.getMenu('./json/menu.json');
-        var login = JSON.parse(localStorage.getItem("login"));
-        if (login) {
-          if (login === 0) {
-            window.location.href = './login.html';
-            //return false;
-          }
-        } else {
-          window.location.href = './login.html';
-          //return false;
-        }
-
         if (showFooter) {
           var currentY = new Date().getFullYear();
           $('.copyright').html('Copyright ©2018-' + currentY + ' SimpleFile v1.1 All Rights Reserved');
@@ -147,5 +132,4 @@
   <li data-type="other">关闭其它</li>
   <li data-type="all">关闭所有</li>
 </ul>
-
 </html>

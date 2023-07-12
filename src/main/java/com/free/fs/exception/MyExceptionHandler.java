@@ -1,7 +1,6 @@
 package com.free.fs.exception;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,10 +27,6 @@ public class MyExceptionHandler {
         if (ex instanceof IException) {
             map.put("code", ((IException) ex).getCode());
             map.put("msg", ex.getMessage());
-        } else if (ex instanceof UnauthorizedException) {
-            //sendRedirect("/error/403", request, response);
-            map.put("code", 403);
-            map.put("msg", "您没有访问此接口的权限");
         } else {
             String message = ex.getMessage();
             map.put("code", 500);
