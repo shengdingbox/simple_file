@@ -11,67 +11,71 @@
     "id": 2,
     "name": "百度云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del1.html"
   },
   {
     "id": 3,
     "name": "FASTDFS存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 4,
     "name": "GITHUB存储",
     "icon": "",
+    "source": "aws",
     "url": "./admin/list.html?source=github"
   },
   {
     "id": 5,
     "name": "华为云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 6,
     "name": "本地存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 7,
     "name": "阿里云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 8,
     "name": "Qcloud云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 9,
     "name": "七牛云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 10,
     "name": "SMMS云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
   },
   {
     "id": 11,
     "name": "又拍云存储",
     "icon": "",
+    "source": "aws",
     "url": "./pages/member/del.html"
-  },
-  {
-    "id": 12,
-    "name": "",
-    "icon": "&#xe70b;",
-    "url": ""
   }
 ]
 

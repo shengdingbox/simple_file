@@ -1,12 +1,7 @@
 package com.free.fs.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.free.fs.dto.MenuDTO;
-import com.free.fs.mapper.TypeMapper;
-import com.free.fs.model.FileType;
 import com.free.fs.model.Menu;
-import com.free.fs.utils.R;
 import com.zhouzifei.tool.config.SimpleFsProperties;
 import com.zhouzifei.tool.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;

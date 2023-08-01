@@ -24,9 +24,6 @@ import java.util.List;
 @Configuration
 public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
-    @Value("${datasource.db.path}")
-    String dbPath;
-
     /**
      * 支持跨域
      */
@@ -46,38 +43,5 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new OptionsInterceptor()).addPathPatterns("/**");
-    }
-
-    @SneakyThrows
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        final File file = new File(dbPath + "/simple-file.db");
-        if (!file.exists()) {
-           //数据库文件不存在
-            File fileDir = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + "simple-file.db");
-            try (InputStream is = Files.newInputStream(fileDir.toPath()); OutputStream os = Files.newOutputStream(file.toPath())) {
-                byte[] buffer = new byte[1024];
-                int length;
-                while ((length = is.read(buffer)) > 0) {
-                    os.write(buffer, 0, length);
-                }
-            }
-        }
-    }
-
-    public void getFileName(File fileDir, List<String> fileNames) {
-        File[] files = fileDir.listFiles();
-        if (files == null) {
-            System.out.println("文件为空");
-        }
-        for (File file : files) {
-            if (file.isDirectory()) {
-                getFileName(file, fileNames);
-            }
-            if (file.isFile()) {
-                fileNames.add(file.getPath());
-            }
-            //System.out.println(file.getPath());
-        }
     }
 }
