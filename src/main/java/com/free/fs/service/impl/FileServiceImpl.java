@@ -44,13 +44,6 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     SimpleFsProperties simpleFsProperties;
-
-    @Autowired
-    FileMapper fileMapper;
-
-    @Autowired
-    TypeMapper typeMapper;
-
     @SuppressWarnings("unchecked")
     @Override
     public List<VirtualFile> getList(FilePojo pojo, String fileType) {
